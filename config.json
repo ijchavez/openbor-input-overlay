@@ -1,0 +1,16 @@
+{
+  "skin": "playstation",
+  "directionControl": "stick",
+  "scale": 1,
+  "opacity": 0.96,
+  "showLabels": true,
+  "alwaysOnTop": true,
+  "clickThrough": false,
+  "window": { "width": 760, "height": 330, "x": null, "y": null },
+  "hotkeys": { "toggleVisibility": "CommandOrControl+Shift+O", "cycleSkin": "CommandOrControl+Shift+K", "toggleClickThrough": "CommandOrControl+Shift+I", "toggleMoveMode": "CommandOrControl+Shift+M" },
+  "mapping": {
+    "ArrowUp": "up", "ArrowDown": "down", "ArrowLeft": "left", "ArrowRight": "right",
+    "KeyZ": "square", "KeyX": "cross", "KeyC": "circle", "KeyV": "triangle",
+    "Enter": "start", "ShiftLeft": "select", "ShiftRight": "select"
+  }
+}

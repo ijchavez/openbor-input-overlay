@@ -1,0 +1,29 @@
+{
+  "name": "openbor-input-overlay",
+  "version": "1.0.0",
+  "description": "Overlay de gamepad transparente para OpenBOR y OBS",
+  "main": "main.js",
+  "author": "openbor-input-overlay contributors",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win"
+  },
+  "optionalDependencies": {
+    "uiohook-napi": "^1.5.5"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.openbor.inputoverlay",
+    "productName": "OpenBOR Input Overlay",
+    "npmRebuild": false,
+    "asarUnpack": ["node_modules/uiohook-napi/**/*"],
+    "files": ["main.js", "preload.js", "src/**/*", "renderer/**/*", "config.json", "package.json"],
+    "win": { "target": ["portable", "nsis"], "artifactName": "${productName}-${version}-${arch}.${ext}" },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+  }
+}

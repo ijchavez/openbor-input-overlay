@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OpenBOR Input Overlay</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+  <main id="overlay" class="skin-playstation">
+    <section class="controller" aria-label="Gamepad input overlay">
+      <header class="topbar drag-region"><div class="brand"><span class="brand-mark">OB</span><span>INPUT OVERLAY</span></div><div id="moveHandle">⠿ ARRASTRAR PARA MOVER</div><div id="status" class="status local"><i></i><span>Inicializando…</span></div></header>
+      <div class="controls">
+        <div class="dpad" aria-label="Direcciones">
+          <div class="dpad-core"></div>
+          <div class="key dpad-key up" data-button="up"><span>▲</span><small>↑</small></div>
+          <div class="key dpad-key right" data-button="right"><span>▶</span><small>→</small></div>
+          <div class="key dpad-key down" data-button="down"><span>▼</span><small>↓</small></div>
+          <div class="key dpad-key left" data-button="left"><span>◀</span><small>←</small></div>
+        </div>
+        <div class="analog-stick" aria-label="Stick analógico"><div class="stick-gate"><div class="stick-knob"><span>●</span></div></div><small>L STICK</small></div>
+        <div class="system-buttons">
+          <div class="system-wrap"><div class="key system-key" data-button="select"></div><small data-label="select">SELECT</small></div>
+          <div class="system-wrap"><div class="key system-key" data-button="start"></div><small data-label="start">START</small></div>
+        </div>
+        <div class="face" aria-label="Botones de acción">
+          <div class="key face-key triangle" data-button="triangle"><span></span><small>V</small></div>
+          <div class="key face-key circle" data-button="circle"><span></span><small>C</small></div>
+          <div class="key face-key cross" data-button="cross"><span></span><small>X</small></div>
+          <div class="key face-key square" data-button="square"><span></span><small>Z</small></div>
+        </div>
+      </div>
+      <footer class="hint"><span>Ctrl+Shift+O ocultar</span><button id="moveMode">Ctrl+Shift+M · Mover</button><span id="sizeControls"><button id="sizeDown" title="Achicar (Ctrl+Shift+↓)">−</button><span>TAMAÑO</span><button id="sizeUp" title="Agrandar (Ctrl+Shift+↑)">+</button></span><button id="clickMode">Click-through: OFF</button></footer>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body></html>
