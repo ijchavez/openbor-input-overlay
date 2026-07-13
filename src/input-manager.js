@@ -1,19 +1,31 @@
-const CODE_TO_UIOHOOK = {
-  ArrowUp: 'ArrowUp', ArrowDown: 'ArrowDown', ArrowLeft: 'ArrowLeft', ArrowRight: 'ArrowRight',
-  Enter: 'Enter', ShiftLeft: 'Shift', ShiftRight: 'Shift',
-  KeyZ: 'Z', KeyX: 'X', KeyC: 'C', KeyV: 'V'
+const CODE_ALIASES = {
+  ControlLeft: 'Ctrl', ControlRight: 'CtrlRight', AltLeft: 'Alt', AltRight: 'AltRight',
+  ShiftLeft: 'Shift', ShiftRight: 'ShiftRight', MetaLeft: 'Meta', MetaRight: 'MetaRight'
 };
 
+function nativeName(code) {
+  if (CODE_ALIASES[code]) return CODE_ALIASES[code];
+  if (code.startsWith('Key')) return code.slice(3);
+  if (code.startsWith('Digit')) return code.slice(5);
+  return code;
+}
+
 class InputManager {
-  constructor(mapping, emit) { this.mapping = mapping; this.emit = emit; this.hook = null; this.pressedCodes = new Set(); }
+  constructor(mapping, emit) {
+    this.mapping = mapping;
+    this.emit = emit;
+    this.hook = null;
+    this.keydownHandler = null;
+    this.keyupHandler = null;
+    this.pressedCodes = new Set();
+  }
 
   start() {
     try {
       const { uIOhook, UiohookKey } = require('uiohook-napi');
       const byKeycode = new Map();
       for (const [code, button] of Object.entries(this.mapping)) {
-        const nativeName = CODE_TO_UIOHOOK[code] || code.replace(/^Key/, '');
-        const keycode = UiohookKey[nativeName];
+        const keycode = UiohookKey[nativeName(code)];
         if (keycode !== undefined) byKeycode.set(keycode, { code, button });
       }
       const handle = (pressed) => ({ keycode }) => {
@@ -23,8 +35,10 @@ class InputManager {
         pressed ? this.pressedCodes.add(entry.code) : this.pressedCodes.delete(entry.code);
         this.emit({ type: 'input', button: entry.button, code: entry.code, pressed, source: 'global' });
       };
-      uIOhook.on('keydown', handle(true));
-      uIOhook.on('keyup', handle(false));
+      this.keydownHandler = handle(true);
+      this.keyupHandler = handle(false);
+      uIOhook.on('keydown', this.keydownHandler);
+      uIOhook.on('keyup', this.keyupHandler);
       uIOhook.start();
       this.hook = uIOhook;
       return { active: true, source: 'global', message: 'Input global activo' };
@@ -34,7 +48,25 @@ class InputManager {
     }
   }
 
-  stop() { if (this.hook) { try { this.hook.stop(); } catch {} } this.hook = null; }
+  updateMapping(mapping) {
+    this.stop();
+    this.mapping = mapping;
+    return this.start();
+  }
+
+  stop() {
+    if (this.hook) {
+      try {
+        if (this.keydownHandler) this.hook.off('keydown', this.keydownHandler);
+        if (this.keyupHandler) this.hook.off('keyup', this.keyupHandler);
+        this.hook.stop();
+      } catch {}
+    }
+    this.hook = null;
+    this.keydownHandler = null;
+    this.keyupHandler = null;
+    this.pressedCodes.clear();
+  }
 }
 
 module.exports = { InputManager };
