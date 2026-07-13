@@ -23,6 +23,8 @@ El indicador verde confirma `Input global activo`; amarillo indica el fallback l
 
 ## Mapping y configuración
 
+También podés reasignar teclas desde la app: desactivá click-through si hace falta, pulsá `Configurar teclas`, elegí un control y presioná la nueva tecla. El cambio se guarda automáticamente en `config.json` y se aplica al input global sin reiniciar.
+
 Editá `config.json` con la app cerrada. En una build portable podés ponerlo junto al `.exe`.
 
 - `skin`: `playstation`, `xbox` o `arcade`.
@@ -33,6 +35,9 @@ Editá `config.json` con la app cerrada. En una build portable podés ponerlo ju
 
 Mapping inicial: flechas → movimiento, `Z` → □, `X` → ✕, `C` → ○, `V` → △, `Enter` → Start y ambos `Shift` → Select. Las skins cambian los símbolos sin cambiar el mapping.
 
+## Perfiles
+
+El botón `Perfiles` permite crear configuraciones con nombre. Cada perfil guarda el mapping de teclas, la skin activa y el tamaño actual del overlay. Desde el mismo panel se puede cargar, actualizar o eliminar un perfil.
 ## Hotkeys
 
 - `Ctrl+Shift+O`: ocultar/mostrar.

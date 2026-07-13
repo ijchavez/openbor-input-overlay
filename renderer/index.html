@@ -5,6 +5,31 @@
   <main id="overlay" class="skin-playstation">
     <section class="controller" aria-label="Gamepad input overlay">
       <header class="topbar drag-region"><div class="brand"><span class="brand-mark">OB</span><span>INPUT OVERLAY</span></div><div id="moveHandle">⠿ ARRASTRAR PARA MOVER</div><div id="status" class="status local"><i></i><span>Inicializando…</span></div></header>
+      <section id="mappingPanel" aria-label="Configurar teclas">
+        <div class="mapping-title">CONFIGURAR TECLAS</div>
+        <div id="mappingHelp">Elegí un control y después presioná una tecla</div>
+        <div class="mapping-grid">
+          <button data-map-action="up"><b>↑</b><span>ARRIBA</span><kbd>—</kbd></button>
+          <button data-map-action="down"><b>↓</b><span>ABAJO</span><kbd>—</kbd></button>
+          <button data-map-action="left"><b>←</b><span>IZQUIERDA</span><kbd>—</kbd></button>
+          <button data-map-action="right"><b>→</b><span>DERECHA</span><kbd>—</kbd></button>
+          <button data-map-action="triangle"><b>△</b><span>SUPERIOR</span><kbd>—</kbd></button>
+          <button data-map-action="circle"><b>○</b><span>DERECHO</span><kbd>—</kbd></button>
+          <button data-map-action="cross"><b>✕</b><span>INFERIOR</span><kbd>—</kbd></button>
+          <button data-map-action="square"><b>□</b><span>IZQUIERDO</span><kbd>—</kbd></button>
+          <button data-map-action="select"><b>−</b><span>SELECT</span><kbd>—</kbd></button>
+          <button data-map-action="start"><b>+</b><span>START</span><kbd>—</kbd></button>
+        </div>
+      </section>
+      <section id="profilePanel" aria-label="Perfiles">
+        <div class="profile-title">PERFILES</div>
+        <p>Guardá y recuperá teclas, tamaño y skin juntos.</p>
+        <label>Nombre del perfil<input id="profileName" maxlength="40" placeholder="Ej: OpenBOR clásico"></label>
+        <button id="saveProfile">Crear / actualizar perfil</button>
+        <label>Perfiles guardados<select id="profileList"></select></label>
+        <div class="profile-actions"><button id="loadProfile">Cargar</button><button id="deleteProfile">Eliminar</button></div>
+        <div id="profileStatus"></div>
+      </section>
       <div class="controls">
         <div class="dpad" aria-label="Direcciones">
           <div class="dpad-core"></div>
@@ -25,7 +50,7 @@
           <div class="key face-key square" data-button="square"><span></span><small>Z</small></div>
         </div>
       </div>
-      <footer class="hint"><span>Ctrl+Shift+O ocultar</span><button id="moveMode">Ctrl+Shift+M · Mover</button><span id="sizeControls"><button id="sizeDown" title="Achicar (Ctrl+Shift+↓)">−</button><span>TAMAÑO</span><button id="sizeUp" title="Agrandar (Ctrl+Shift+↑)">+</button></span><button id="clickMode">Click-through: OFF</button></footer>
+      <footer class="hint"><span>Ctrl+Shift+O ocultar</span><button id="moveMode">Ctrl+Shift+M · Mover</button><span id="sizeControls"><button id="sizeDown" title="Achicar (Ctrl+Shift+↓)">−</button><span>TAMAÑO</span><button id="sizeUp" title="Agrandar (Ctrl+Shift+↑)">+</button></span><button id="profileMode">Perfiles</button><button id="configureMode">Configurar teclas</button><button id="clickMode">Click-through: OFF</button></footer>
     </section>
   </main>
   <script src="app.js"></script>

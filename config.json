@@ -6,11 +6,50 @@
   "showLabels": true,
   "alwaysOnTop": true,
   "clickThrough": false,
-  "window": { "width": 760, "height": 330, "x": null, "y": null },
-  "hotkeys": { "toggleVisibility": "CommandOrControl+Shift+O", "cycleSkin": "CommandOrControl+Shift+K", "toggleClickThrough": "CommandOrControl+Shift+I", "toggleMoveMode": "CommandOrControl+Shift+M" },
+  "window": {
+    "width": 456,
+    "height": 198,
+    "x": null,
+    "y": null
+  },
+  "hotkeys": {
+    "toggleVisibility": "CommandOrControl+Shift+O",
+    "cycleSkin": "CommandOrControl+Shift+K",
+    "toggleClickThrough": "CommandOrControl+Shift+I",
+    "toggleMoveMode": "CommandOrControl+Shift+M"
+  },
   "mapping": {
-    "ArrowUp": "up", "ArrowDown": "down", "ArrowLeft": "left", "ArrowRight": "right",
-    "KeyZ": "square", "KeyX": "cross", "KeyC": "circle", "KeyV": "triangle",
-    "Enter": "start", "ShiftLeft": "select", "ShiftRight": "select"
-  }
+    "ArrowUp": "up",
+    "ArrowDown": "down",
+    "ArrowLeft": "left",
+    "ArrowRight": "right",
+    "KeyZ": "square",
+    "KeyX": "cross",
+    "KeyC": "circle",
+    "KeyV": "triangle",
+    "Enter": "start",
+    "ShiftRight": "select"
+  },
+  "profiles": {
+    "gerardo": {
+      "mapping": {
+        "ArrowUp": "up",
+        "ArrowDown": "down",
+        "ArrowLeft": "left",
+        "ArrowRight": "right",
+        "KeyZ": "square",
+        "KeyX": "cross",
+        "KeyC": "circle",
+        "KeyV": "triangle",
+        "Enter": "start",
+        "ShiftRight": "select"
+      },
+      "skin": "playstation",
+      "window": {
+        "width": 456,
+        "height": 198
+      }
+    }
+  },
+  "activeProfile": "gerardo"
 }
