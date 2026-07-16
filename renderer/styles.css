@@ -56,3 +56,7 @@ body { position: relative; }
 #deleteProfile { color:#ff8997 !important; }
 #profileStatus { grid-column:1/3; min-height:12px; text-align:center; color:#74e7a8; font-size:9px; }
 #profileMode.active { color:#59e4ff; border-color:#3c91a4; background:rgba(89,228,255,.1); }
+.stream-mode .topbar,.stream-mode .hint { display:none; }
+.stream-mode .controller { padding-top:12px; padding-bottom:12px; }
+.stream-mode.move-mode .topbar,.stream-mode.move-mode .hint,.stream-mode.mapping-mode .hint,.stream-mode.profile-mode .hint { display:flex; }
+#streamMode.active { color:#74e7a8; border-color:#3b9e68; background:rgba(80,220,140,.1); }

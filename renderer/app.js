@@ -134,6 +134,12 @@ window.overlay.onInput(handleInput);
 window.overlay.onSkin(setSkin);
 window.overlay.onStatus(({ source, message }) => { const el = document.querySelector('#status'); el.className = `status ${source}`; el.querySelector('span').textContent = message; });
 window.overlay.onClickThrough((enabled) => { document.querySelector('#clickMode').textContent = `Click-through: ${enabled ? 'ON' : 'OFF'}`; });
+window.overlay.onStreamMode((enabled) => {
+  document.body.classList.toggle('stream-mode', enabled);
+  const button = document.querySelector('#streamMode');
+  button.classList.toggle('active', enabled);
+  button.textContent = enabled ? 'Modo OBS: ON' : 'Modo OBS';
+});
 window.overlay.onMoveMode((enabled) => {
   document.body.classList.toggle('move-mode', enabled);
   const button = document.querySelector('#moveMode');
@@ -162,6 +168,7 @@ document.querySelector('#clickMode').addEventListener('click', () => window.over
 document.querySelector('#moveMode').addEventListener('click', () => window.overlay.toggleMoveMode());
 document.querySelector('#configureMode').addEventListener('click', () => window.overlay.toggleConfigMode());
 document.querySelector('#profileMode').addEventListener('click', () => window.overlay.toggleProfileMode());
+document.querySelector('#streamMode').addEventListener('click', () => window.overlay.toggleStreamMode());
 document.querySelector('#saveProfile').addEventListener('click', async () => {
   const name = document.querySelector('#profileName').value.trim();
   const result = await window.overlay.saveProfile(name);
@@ -206,7 +213,7 @@ document.querySelector('#sizeUp').addEventListener('click', () => window.overlay
 
 let interactiveHover = false;
 window.addEventListener('mousemove', (event) => {
-  const next = Boolean(event.target.closest?.('#clickMode, #configureMode, #profileMode'));
+  const next = Boolean(event.target.closest?.('#clickMode, #configureMode, #profileMode, #streamMode'));
   if (next === interactiveHover) return;
   interactiveHover = next;
   window.overlay.setInteractiveHover(next);

@@ -12,28 +12,49 @@ function merge(base, custom) {
   ]));
 }
 
+function getRuntimeConfigPath(app) {
+  if (!app.isPackaged) return path.join(__dirname, '..', 'config.user.json');
+  const portablePath = path.join(path.dirname(app.getPath('exe')), 'config.json');
+  return fs.existsSync(portablePath) ? portablePath : path.join(app.getPath('userData'), 'config.json');
+}
+
 function loadConfig(app) {
-  const candidates = [path.join(path.dirname(app.getPath('exe')), 'config.json'), path.join(app.getPath('userData'), 'config.json'), path.join(__dirname, '..', 'config.json')];
-  const file = candidates.find(fs.existsSync);
+  const configPath = getRuntimeConfigPath(app);
   try {
-    const custom = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const custom = fs.existsSync(configPath) ? JSON.parse(fs.readFileSync(configPath, 'utf8')) : {};
     const loaded = merge(defaults, custom);
     if (custom.mapping) loaded.mapping = custom.mapping;
     if (custom.profiles) loaded.profiles = custom.profiles;
-    return { ...loaded, configPath: file };
+    return { ...loaded, configPath };
+  } catch (error) {
+    console.warn('Invalid runtime config; using defaults:', error.message);
+    return { ...defaults, configPath };
   }
-  catch (error) { console.warn('Invalid config.json; using defaults:', error.message); return { ...defaults, configPath: file }; }
+}
+
+function writeConfig(configPath, stored) {
+  fs.mkdirSync(path.dirname(configPath), { recursive: true });
+  const temporaryPath = `${configPath}.tmp`;
+  const backupPath = `${configPath}.bak`;
+  if (fs.existsSync(configPath)) fs.copyFileSync(configPath, backupPath);
+  fs.writeFileSync(temporaryPath, `${JSON.stringify(stored, null, 2)}\n`, 'utf8');
+  try {
+    fs.renameSync(temporaryPath, configPath);
+  } catch {
+    fs.copyFileSync(temporaryPath, configPath);
+    fs.unlinkSync(temporaryPath);
+  }
 }
 
 function saveConfig(config) {
   const { configPath, ...stored } = config;
-  fs.writeFileSync(configPath, `${JSON.stringify(stored, null, 2)}\n`, 'utf8');
+  writeConfig(configPath, stored);
 }
 
 function saveMapping(configPath, mapping) {
-  const stored = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const stored = fs.existsSync(configPath) ? JSON.parse(fs.readFileSync(configPath, 'utf8')) : {};
   stored.mapping = mapping;
-  fs.writeFileSync(configPath, `${JSON.stringify(stored, null, 2)}\n`, 'utf8');
+  writeConfig(configPath, stored);
 }
 
 module.exports = { loadConfig, saveConfig, saveMapping };
