@@ -1,6 +1,7 @@
 {
   "skin": "playstation",
   "directionControl": "stick",
+  "layout": "standard",
   "scale": 1,
   "opacity": 0.96,
   "showLabels": true,
@@ -20,6 +21,7 @@
     "KeyZ": "square", "KeyX": "cross", "KeyC": "circle", "KeyV": "triangle",
     "Enter": "start", "ShiftLeft": "select", "ShiftRight": "select"
   },
+  "profilesDirectory": null,
   "profiles": {},
   "activeProfile": null
 }

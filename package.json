@@ -8,7 +8,9 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
-    "build": "electron-builder --win"
+    "build": "electron-builder --win --x64",
+    "build:portable": "electron-builder --win portable --x64",
+    "build:installer": "electron-builder --win nsis --x64"
   },
   "optionalDependencies": {
     "uiohook-napi": "^1.5.5"
@@ -21,9 +23,36 @@
     "appId": "com.openbor.inputoverlay",
     "productName": "OpenBOR Input Overlay",
     "npmRebuild": false,
-    "asarUnpack": ["node_modules/uiohook-napi/**/*"],
-    "files": ["main.js", "preload.js", "src/**/*", "renderer/**/*", "config.json", "package.json"],
-    "win": { "target": ["portable", "nsis"], "artifactName": "${productName}-${version}-${arch}.${ext}" },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true }
+    "asarUnpack": [
+      "node_modules/uiohook-napi/**/*"
+    ],
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "renderer/**/*",
+      "config.json",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        },
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }

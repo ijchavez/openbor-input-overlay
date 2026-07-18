@@ -1,11 +1,13 @@
 const path = require('node:path');
-const { app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu, dialog } = require('electron');
 const { loadConfig, saveConfig, saveMapping } = require('./src/config');
 const { InputManager } = require('./src/input-manager');
+const { ProfileStore } = require('./src/profile-store');
 
 let window;
 let input;
 let config;
+let profileStore;
 let tray;
 let saveTimer;
 let quitting = false;
@@ -23,6 +25,17 @@ const skins = ['playstation', 'xbox', 'arcade'];
 const MAX_WINDOW = { width: 760, height: 330 };
 const MIN_WINDOW = { width: 380, height: 165 };
 const MAPPABLE_BUTTONS = new Set(['up', 'down', 'left', 'right', 'square', 'cross', 'circle', 'triangle', 'start', 'select']);
+
+function defaultProfilesDirectory() {
+  if (!app.isPackaged) return path.join(__dirname, 'profiles');
+  if (process.env.PORTABLE_EXECUTABLE_DIR) return path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'profiles');
+  return path.join(app.getPath('userData'), 'profiles');
+}
+
+function listProfileNames() {
+  try { return profileStore?.list() || []; }
+  catch (error) { console.error('No se pudo leer la carpeta de perfiles:', error); return []; }
+}
 
 function send(channel, payload) {
   if (window && !window.isDestroyed()) window.webContents.send(channel, payload);
@@ -61,7 +74,7 @@ function createWindow() {
     alwaysOnTop: config.alwaysOnTop,
     skipTaskbar: false,
     backgroundColor: '#00000000',
-    webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false }
+    webPreferences: { preload: path.join(__dirname, 'preload.js'), contextIsolation: true, nodeIntegration: false, backgroundThrottling: false }
   });
   if (config.alwaysOnTop) window.setAlwaysOnTop(true, 'screen-saver');
   window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
@@ -180,6 +193,12 @@ function toggleStreamMode() {
   scheduleStateSave();
   updateTrayMenu();
 }
+function toggleLayout() {
+  config.layout = config.layout === 'reversed' ? 'standard' : 'reversed';
+  send('layout', config.layout);
+  scheduleStateSave();
+  updateTrayMenu();
+}
 
 function applyProfileSize(size) {
   const bounds = window.getBounds();
@@ -212,10 +231,12 @@ function registerShortcut(accelerator, callback) {
 }
 
 function applyProfile(name) {
-  const profile = config.profiles?.[name];
-  if (!profile) return { ok: false, error: 'Perfil no encontrado' };
-  config.mapping = { ...profile.mapping };
+  let profile;
+  try { profile = profileStore.load(name); }
+  catch (error) { return { ok: false, error: error.message }; }
+  config.mapping = { ...(profile.mapping || config.mapping) };
   config.skin = skins.includes(profile.skin) ? profile.skin : skins[0];
+  config.layout = profile.layout === 'reversed' ? 'reversed' : 'standard';
   config.activeProfile = name;
   applyProfileSize(profile.window);
   const [width, height] = window.getSize();
@@ -225,8 +246,9 @@ function applyProfile(name) {
     const status = input.updateMapping(config.mapping);
     send('input-status', status);
     send('skin', config.skin);
+    send('layout', config.layout);
     updateTrayMenu();
-    return { ok: true, mapping: config.mapping, skin: config.skin, activeProfile: name };
+    return { ok: true, mapping: config.mapping, skin: config.skin, layout: config.layout, activeProfile: name };
   } catch (error) {
     return { ok: false, error: error.message };
   }
@@ -234,7 +256,7 @@ function applyProfile(name) {
 
 function updateTrayMenu() {
   if (!tray) return;
-  const profileNames = Object.keys(config?.profiles || {}).sort();
+  const profileNames = listProfileNames();
   const profileItems = profileNames.length
     ? profileNames.map((name) => ({ label: name, type: 'radio', checked: config.activeProfile === name, click: () => applyProfile(name) }))
     : [{ label: 'Sin perfiles guardados', enabled: false }];
@@ -248,6 +270,7 @@ function updateTrayMenu() {
     { label: profileMode ? 'Cerrar perfiles' : 'Administrar perfiles', click: toggleProfileMode },
     { label: configMode ? 'Cerrar configuración' : 'Configurar teclas', click: toggleConfigMode },
     { label: 'Cambiar skin', click: cycleSkin },
+    { label: 'Controles invertidos', type: 'checkbox', checked: config?.layout === 'reversed', click: toggleLayout },
     { type: 'separator' },
     { label: 'Salir', click: () => app.quit() }
   ]));
@@ -262,7 +285,14 @@ async function createTray() {
 }
 
 app.whenReady().then(async () => {
+  app.setAppUserModelId('com.openbor.inputoverlay');
   config = loadConfig(app);
+  profileStore = new ProfileStore(config.profilesDirectory || defaultProfilesDirectory());
+  profileStore.migrate(config.profiles);
+  config.profiles = {};
+  config.profilesDirectory = profileStore.getDirectory();
+  config.layout = config.layout === 'reversed' ? 'reversed' : 'standard';
+  saveConfig(config);
   input = new InputManager(config.mapping, (event) => send('input', event));
   createWindow();
   await createTray();
@@ -281,25 +311,52 @@ ipcMain.on('toggle-move-mode', toggleMoveMode);
 ipcMain.on('toggle-config-mode', toggleConfigMode);
 ipcMain.on('toggle-profile-mode', toggleProfileMode);
 ipcMain.on('toggle-stream-mode', toggleStreamMode);
+ipcMain.on('toggle-layout', toggleLayout);
 ipcMain.on('adjust-window-size', (_event, direction) => adjustWindowSize(Math.sign(Number(direction))));
 ipcMain.on('interactive-hover', (_event, interactive) => {
   pointerInteractive = Boolean(interactive);
   if (window && !window.isDestroyed()) applyMouseMode();
 });
 
-ipcMain.handle('list-profiles', () => ({ profiles: Object.keys(config.profiles || {}).sort(), activeProfile: config.activeProfile || null }));
+ipcMain.handle('list-profiles', () => ({
+  profiles: listProfileNames(),
+  activeProfile: config.activeProfile || null,
+  directory: profileStore.getDirectory()
+}));
 
-ipcMain.handle('save-profile', (_event, requestedName) => {
-  const name = String(requestedName || '').trim().slice(0, 40);
-  if (!name) return { ok: false, error: 'Escribí un nombre para el perfil' };
-  const { width, height } = window.getBounds();
-  config.profiles ||= {};
-  config.profiles[name] = { mapping: { ...config.mapping }, skin: config.skin, window: { width, height } };
-  config.activeProfile = name;
+ipcMain.handle('choose-profiles-directory', async () => {
+  const result = await dialog.showOpenDialog(window, {
+    title: 'Elegir carpeta de perfiles',
+    defaultPath: profileStore.getDirectory(),
+    buttonLabel: 'Usar esta carpeta',
+    properties: ['openDirectory', 'createDirectory']
+  });
+  if (result.canceled || !result.filePaths[0]) return { ok: false, canceled: true };
   try {
+    profileStore.setDirectory(result.filePaths[0]);
+    config.profilesDirectory = profileStore.getDirectory();
+    config.activeProfile = null;
     persistState();
     updateTrayMenu();
-    return { ok: true, profiles: Object.keys(config.profiles).sort(), activeProfile: name };
+    return { ok: true, profiles: listProfileNames(), activeProfile: null, directory: profileStore.getDirectory() };
+  } catch (error) {
+    return { ok: false, error: error.message };
+  }
+});
+
+ipcMain.handle('save-profile', (_event, requestedName) => {
+  const { width, height } = window.getBounds();
+  try {
+    const name = profileStore.save(requestedName, {
+      mapping: { ...config.mapping },
+      skin: config.skin,
+      layout: config.layout,
+      window: { width, height }
+    });
+    config.activeProfile = name;
+    persistState();
+    updateTrayMenu();
+    return { ok: true, profiles: listProfileNames(), activeProfile: name, directory: profileStore.getDirectory() };
   } catch (error) {
     return { ok: false, error: error.message };
   }
@@ -308,18 +365,16 @@ ipcMain.handle('save-profile', (_event, requestedName) => {
 ipcMain.handle('load-profile', (_event, name) => applyProfile(name));
 
 ipcMain.handle('delete-profile', (_event, name) => {
-  if (!config.profiles?.[name]) return { ok: false, error: 'Perfil no encontrado' };
-  delete config.profiles[name];
-  if (config.activeProfile === name) config.activeProfile = null;
   try {
+    profileStore.delete(name);
+    if (config.activeProfile === name) config.activeProfile = null;
     persistState();
     updateTrayMenu();
-    return { ok: true, profiles: Object.keys(config.profiles).sort(), activeProfile: config.activeProfile };
+    return { ok: true, profiles: listProfileNames(), activeProfile: config.activeProfile, directory: profileStore.getDirectory() };
   } catch (error) {
     return { ok: false, error: error.message };
   }
 });
-
 ipcMain.handle('set-mapping', (_event, { button, code }) => {
   if (!MAPPABLE_BUTTONS.has(button) || typeof code !== 'string' || code.length > 40) return { ok: false, error: 'Asignación inválida' };
   const mapping = Object.fromEntries(Object.entries(config.mapping).filter(([existingCode, existingButton]) => existingCode !== code && existingButton !== button));

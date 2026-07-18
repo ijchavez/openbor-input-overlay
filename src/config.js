@@ -14,8 +14,9 @@ function merge(base, custom) {
 
 function getRuntimeConfigPath(app) {
   if (!app.isPackaged) return path.join(__dirname, '..', 'config.user.json');
-  const portablePath = path.join(path.dirname(app.getPath('exe')), 'config.json');
-  return fs.existsSync(portablePath) ? portablePath : path.join(app.getPath('userData'), 'config.json');
+  if (process.env.PORTABLE_EXECUTABLE_DIR) return path.join(process.env.PORTABLE_EXECUTABLE_DIR, 'config.json');
+  const besideExecutable = path.join(path.dirname(app.getPath('exe')), 'config.json');
+  return fs.existsSync(besideExecutable) ? besideExecutable : path.join(app.getPath('userData'), 'config.json');
 }
 
 function loadConfig(app) {
