@@ -14,13 +14,16 @@ Overlay transparente para Windows que convierte las teclas usadas en OpenBOR en 
 - [Interfaz del overlay](#interfaz-del-overlay)
 - [Input global y fallback local](#input-global-y-fallback-local)
 - [Mover y cambiar el tamaño](#mover-y-cambiar-el-tamaño)
+- [Cambiar los controles de lado](#cambiar-los-controles-de-lado)
 - [Click-through](#click-through)
 - [Modo transmisión para OBS](#modo-transmisión-para-obs)
 - [Skins](#skins)
 - [Configurar las teclas](#configurar-las-teclas)
   - [Mapping predeterminado](#mapping-predeterminado)
   - [Códigos de teclado](#códigos-de-teclado)
+- [Joystick o gamepad USB](#joystick-o-gamepad-usb)
 - [Perfiles](#perfiles)
+  - [Elegir la carpeta de perfiles](#elegir-la-carpeta-de-perfiles)
   - [Crear o actualizar un perfil](#crear-o-actualizar-un-perfil)
   - [Cargar un perfil](#cargar-un-perfil)
   - [Eliminar un perfil](#eliminar-un-perfil)
@@ -55,7 +58,9 @@ Overlay transparente para Windows que convierte las teclas usadas en OpenBOR en 
 - Modo mover con restauración automática del click-through.
 - Tamaño ajustable entre `380 × 165` y `760 × 330` píxeles.
 - Reasignación visual de teclas sin editar JSON manualmente.
-- Perfiles con mapping, skin y tamaño.
+- Layout reversible para colocar el D-pad/stick a la izquierda o a la derecha.
+- Soporte directo para gamepads USB con mapping estándar.
+- Perfiles individuales en archivos JSON con mapping, skin, tamaño y layout.
 - Modo transmisión limpio para OBS.
 - Persistencia automática de posición, tamaño, skin, click-through, modo transmisión y último perfil.
 - Menú en la bandeja de Windows.
@@ -96,18 +101,21 @@ Al iniciar se abre el overlay y aparece un icono en la bandeja de Windows, junto
 
 ```powershell
 npm.cmd run dev
+npm.cmd run build:portable
+npm.cmd run build:installer
 npm.cmd run build
 ```
 
 - `npm.cmd run dev`: inicia Electron con el argumento de desarrollo.
-- `npm.cmd run build`: genera el instalador NSIS y la versión portable dentro de `dist/`.
-
+- `npm.cmd run build:portable`: genera únicamente el ejecutable portable x64.
+- `npm.cmd run build:installer`: genera únicamente el instalador NSIS x64.
+- `npm.cmd run build`: genera ambos artefactos dentro de `dist/`.
 ## Inicio rápido
 
 1. Iniciá el overlay con `npm.cmd start`.
 2. Comprobá que el indicador muestre `Input global activo`.
 3. Pulsá `Ctrl+Shift+M` para entrar en modo mover.
-4. Arrastrá la franja superior y ajustá el tamaño con `−` o `+`.
+4. Arrastrá la franja superior, ajustá el tamaño con `−` o `+` y usá `⇄` para cambiar los controles de lado.
 5. Pulsá nuevamente `Ctrl+Shift+M` para terminar.
 6. Configurá las teclas desde `Configurar teclas` si el mapping predeterminado no coincide con OpenBOR.
 7. Activá click-through con `Ctrl+Shift+I` para que el overlay no intercepte el mouse.
@@ -170,6 +178,15 @@ Límites de tamaño:
 El contenido escala proporcionalmente y la ventana conserva su centro durante el cambio. Al salir del modo mover se restaura el estado de click-through que estaba activo antes de entrar.
 
 La posición y el tamaño se guardan automáticamente después de mover o redimensionar.
+
+## Cambiar los controles de lado
+
+Con `Modo mover` activo, pulsá el botón `⇄` para alternar entre estas disposiciones:
+
+- **Estándar:** D-pad/stick a la izquierda y botones de acción a la derecha.
+- **Invertida:** botones de acción a la izquierda y D-pad/stick a la derecha.
+
+También se puede activar `Controles invertidos` desde la bandeja de Windows. La disposición se guarda automáticamente y forma parte de cada perfil.
 
 ## Click-through
 
@@ -278,15 +295,55 @@ El mapping utiliza valores de [`KeyboardEvent.code`](https://developer.mozilla.o
 
 No todas las teclas especiales de todos los teclados tienen necesariamente un equivalente en `UiohookKey`. El fallback local puede reconocer códigos que el hook global no soporte.
 
+## Joystick o gamepad USB
+
+La aplicación detecta mediante la Gamepad API el primer mando USB que Windows y Chromium expongan al sistema. No requiere activar el hook global de teclado.
+
+Mapping estándar actual:
+
+| Control físico | Control visual |
+|---|---|
+| Stick izquierdo o D-pad | Direcciones |
+| A / cruz (botón 0) | Cruz / botón inferior |
+| B / círculo (botón 1) | Círculo / botón derecho |
+| X / cuadrado (botón 2) | Cuadrado / botón izquierdo |
+| Y / triángulo (botón 3) | Triángulo / botón superior |
+| Back / Share (botón 8) | Select |
+| Start / Options (botón 9) | Start |
+
+1. Conectá el joystick antes o después de abrir el overlay.
+2. Pulsá cualquier botón si el navegador todavía no lo enumeró.
+3. El estado superior cambia a `Gamepad USB: nombre del dispositivo`.
+4. Las pulsaciones se iluminan en el overlay y quedan visibles en la captura de OBS.
+
+El teclado y el gamepad pueden usarse al mismo tiempo. Se aplica una zona muerta de `0.45` al stick izquierdo para evitar entradas accidentales. La asignación USB es fija por ahora; algunos controles genéricos que no respetan el mapping estándar pueden presentar botones intercambiados.
+
 ## Perfiles
 
-Los perfiles agrupan configuraciones para distintos juegos o jugadores.
+Los perfiles agrupan configuraciones para distintos juegos o jugadores. Cada perfil se guarda como un archivo `.json` independiente.
+
+### Elegir la carpeta de perfiles
+
+1. Abrí `Perfiles`.
+2. Pulsá `Elegir carpeta`.
+3. Elegí una carpeta existente o creá una desde el selector nativo de Windows.
+4. Pulsá `Usar esta carpeta`.
+
+La ruta elegida se conserva al reiniciar y la lista se actualiza con todos los `.json` válidos de esa carpeta. Los archivos inválidos se ignoran sin impedir que la aplicación arranque.
+
+Ubicaciones predeterminadas:
+
+- **Desarrollo:** `profiles/` dentro del repositorio.
+- **Portable:** `profiles/` junto al ejecutable.
+- **Instalada:** `profiles/` dentro del directorio de datos de la aplicación.
+
+Los perfiles antiguos guardados dentro de la configuración se migran automáticamente a archivos individuales la primera vez que se inicia esta versión.
 
 ### Crear o actualizar un perfil
 
 1. Configurá el mapping deseado.
 2. Elegí la skin.
-3. Ajustá el tamaño del overlay.
+3. Ajustá el tamaño y la disposición izquierda/derecha del overlay.
 4. Pulsá `Perfiles`.
 5. Escribí un nombre de hasta 40 caracteres.
 6. Pulsá `Crear / actualizar perfil`.
@@ -299,7 +356,7 @@ Si ya existe un perfil con el mismo nombre, se reemplaza con los valores actuale
 2. Seleccioná un nombre en `Perfiles guardados`.
 3. Pulsá `Cargar`.
 
-La aplicación aplica inmediatamente el mapping, la skin y el tamaño. El hook global se reinicia con las teclas del perfil y el nombre queda marcado como activo.
+La aplicación aplica inmediatamente el mapping, la skin, el tamaño y la disposición. El hook global se reinicia con las teclas del perfil y el nombre queda marcado como activo.
 
 También se puede cargar un perfil directamente desde el submenú `Perfiles` de la bandeja.
 
@@ -319,6 +376,7 @@ Cada perfil guarda:
 - Mapping de teclas.
 - Skin.
 - Ancho y alto del overlay.
+- Disposición estándar o invertida.
 
 Actualmente un perfil no guarda:
 
@@ -347,6 +405,7 @@ El menú permite:
 - Abrir o cerrar el administrador de perfiles.
 - Abrir o cerrar la configuración de teclas.
 - Cambiar la skin.
+- Invertir la posición del D-pad/stick y los botones de acción.
 - Salir completamente de la aplicación.
 
 Cerrar la ventana mediante `Alt+F4` no termina el proceso: la oculta en la bandeja. Para cerrar realmente la aplicación elegí `Salir` en ese menú.
@@ -383,15 +442,15 @@ Al ejecutar mediante `npm.cmd start`, el estado del usuario se guarda en:
 config.user.json
 ```
 
-Este archivo está incluido en `.gitignore` y no debe aparecer en commits. Conserva perfiles y preferencias personales sin modificar los defaults del repositorio.
+Este archivo está incluido en `.gitignore` y no debe aparecer en commits. Conserva las preferencias personales y la ruta de la carpeta de perfiles sin modificar los defaults del repositorio.
 
 ### Aplicación instalada o portable
 
 En una aplicación empaquetada:
 
-1. Si existe un `config.json` junto al ejecutable, se usa como configuración portable.
-2. Si no existe, se usa el directorio `userData` de Electron, normalmente dentro de `%APPDATA%\openbor-input-overlay\config.json`.
-
+1. La build portable detecta `PORTABLE_EXECUTABLE_DIR` y guarda automáticamente `config.json` y la carpeta `profiles/` junto al `.exe`. Así se pueden copiar juntos a otra PC o unidad USB.
+2. En una instalación normal, si existe un `config.json` junto al ejecutable se usa ese archivo.
+3. Si no existe, se usa el directorio `userData` de Electron, normalmente dentro de `%APPDATA%\openbor-input-overlay\config.json`.
 ### Copias de respaldo
 
 Antes de sobrescribir la configuración, la aplicación copia la versión anterior a:
@@ -411,6 +470,8 @@ Se guarda automáticamente al:
 - Cambiar la skin.
 - Alternar click-through.
 - Alternar modo OBS.
+- Cambiar la disposición de los controles.
+- Elegir otra carpeta de perfiles.
 - Crear, cargar o eliminar perfiles.
 - Salir de la aplicación.
 
@@ -422,6 +483,7 @@ Ejemplo resumido:
 {
   "skin": "playstation",
   "directionControl": "stick",
+  "layout": "standard",
   "scale": 1,
   "opacity": 0.96,
   "showLabels": true,
@@ -445,7 +507,7 @@ Ejemplo resumido:
     "ArrowUp": "up",
     "KeyZ": "square"
   },
-  "profiles": {},
+  "profilesDirectory": null,
   "activeProfile": null
 }
 ```
@@ -454,6 +516,7 @@ Ejemplo resumido:
 |---|---|---|
 | `skin` | string | `playstation`, `xbox` o `arcade` |
 | `directionControl` | string | `stick` o `dpad` |
+| `layout` | string | `standard` o `reversed`; define qué grupo aparece a cada lado |
 | `scale` | number | Escala adicional aplicada al contenido visual |
 | `opacity` | number | Opacidad del overlay, normalmente entre `0` y `1` |
 | `showLabels` | boolean | Muestra u oculta etiquetas y barra inferior |
@@ -466,7 +529,8 @@ Ejemplo resumido:
 | `window.y` | number o null | Posición vertical; `null` deja decidir a Windows |
 | `hotkeys` | object | Aceleradores globales compatibles con Electron |
 | `mapping` | object | Relación `KeyboardEvent.code` → control visual |
-| `profiles` | object | Perfiles guardados por nombre |
+| `profilesDirectory` | string o null | Carpeta de archivos de perfil; `null` usa la ubicación predeterminada |
+| `profiles` | object | Campo heredado que se migra a archivos individuales al iniciar |
 | `activeProfile` | string o null | Último perfil cargado o creado |
 
 Controles válidos dentro de `mapping`:
@@ -511,27 +575,49 @@ No debería ser necesario usar chroma key. Si aparece un rectángulo negro, camb
 
 ## Compilar instalador y portable
 
-Ejecutá:
+### Generar solamente el portable
+
+```powershell
+npm.cmd run build:portable
+```
+
+El archivo resultante queda en `dist/` con un nombre similar a:
+
+```text
+OpenBOR Input Overlay-Portable-1.0.0-x64.exe
+```
+
+Es un único ejecutable: no requiere instalación. Al cerrarlo desde la bandeja guarda un `config.json` junto al `.exe`; distribuí ese JSON solamente si querés incluir una configuración o perfiles predefinidos. Para una descarga limpia alcanza con publicar el `.exe`.
+
+### Generar solamente el instalador
+
+```powershell
+npm.cmd run build:installer
+```
+
+El resultado usa un nombre similar a:
+
+```text
+OpenBOR Input Overlay-Setup-1.0.0-x64.exe
+```
+
+### Generar ambos
 
 ```powershell
 npm.cmd run build
 ```
 
-`electron-builder` genera en `dist/`:
-
-- Instalador NSIS para Windows.
-- Ejecutable portable.
-
 Configuración de build relevante:
 
 - App ID: `com.openbor.inputoverlay`.
 - Nombre: `OpenBOR Input Overlay`.
+- Arquitectura: Windows x64.
 - Targets: `portable` y `nsis`.
+- Cada target tiene un nombre de artefacto distinto para evitar sobrescrituras.
 - `uiohook-napi` queda fuera del ASAR para que su binario nativo pueda cargarse.
 - `npmRebuild` está desactivado en la configuración actual.
 
-Antes de distribuir, probá tanto el instalador como el portable en una máquina limpia y verificá que el antivirus no bloquee el módulo nativo.
-
+Antes de distribuir, probá el portable y el instalador en una máquina limpia, verificá que el input global funcione y comprobá que el antivirus no bloquee el módulo nativo. Al no estar firmado digitalmente, Windows SmartScreen puede mostrar una advertencia al descargarlo o ejecutarlo.
 ## Solución de problemas
 
 ### `npm` no se reconoce
@@ -650,11 +736,11 @@ Cerrá cualquier proceso iniciado desde otra copia del repositorio.
 ## Limitaciones actuales
 
 - Solo Windows está contemplado y probado como plataforma principal.
-- El input configurable actual es de teclado; todavía no detecta directamente gamepads físicos ni botones del mouse.
+- Los gamepads usan un mapping USB estándar fijo; todavía no se pueden reasignar sus botones ni usar botones del mouse.
 - Hay un solo overlay y un solo jugador por instancia.
 - Los perfiles todavía no guardan posición, opacidad, click-through ni tipo de dirección.
 - No existe todavía una ventana de configuración separada.
-- No hay importación/exportación de perfiles.
+- Los perfiles se pueden compartir como archivos JSON, pero todavía no hay botones dedicados de importar/exportar.
 - No hay actualización automática.
 - Los atajos de tamaño no son configurables desde `config.json`.
 - El fullscreen exclusivo puede impedir que el overlay se vea.
@@ -669,6 +755,7 @@ openbor-input-overlay/
 ├─ config.user.json        Estado local ignorado por Git
 ├─ src/
 │  ├─ config.js            Carga, mezcla, persistencia y backup
+│  ├─ profile-store.js      Perfiles JSON y migración
 │  └─ input-manager.js     Hook global y actualización del mapping
 └─ renderer/
    ├─ index.html           Estructura visual y paneles
@@ -682,7 +769,8 @@ Responsabilidades principales:
 - `preload.js`: expone únicamente las operaciones IPC necesarias mediante `contextBridge`.
 - `src/config.js`: selecciona el archivo de estado, mezcla defaults y guarda con `.tmp`/`.bak`.
 - `src/input-manager.js`: traduce códigos, administra listeners de `uiohook-napi` y reinicia el mapping.
-- `renderer/app.js`: actualiza botones, stick, paneles de configuración y perfiles.
+- `src/profile-store.js`: guarda, carga, enumera, elimina y migra archivos de perfil JSON.
+- `renderer/app.js`: actualiza botones, stick, gamepad USB, layout y paneles de configuración y perfiles.
 
 ## Seguridad del renderer
 
