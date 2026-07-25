@@ -1,5 +1,7 @@
 # OpenBOR Input Overlay
 
+**Español** | [English](README.en.md) | [Português (Brasil)](README.pt-BR.md)
+
 Overlay transparente para Windows que convierte las teclas usadas en OpenBOR en un mando visual. Está pensado para jugar, grabar o transmitir con OBS y ofrece input global, click-through, movimiento y escalado, skins, reasignación de teclas, perfiles, modo transmisión y control desde la bandeja de Windows.
 
 ## Índice
