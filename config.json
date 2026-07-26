@@ -4,6 +4,15 @@
   "layout": "standard",
   "scale": 1,
   "opacity": 0.96,
+  "lighting": {
+    "buttonColor": "#59e4ff",
+    "buttonIntensity": 1,
+    "dpadColor": "#59e4ff",
+    "dpadIntensity": 0.65,
+    "trailEnabled": true,
+    "trailDuration": 240,
+    "trailIntensity": 0.55
+  },
   "showLabels": true,
   "alwaysOnTop": true,
   "clickThrough": false,

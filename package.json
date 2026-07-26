@@ -1,6 +1,6 @@
 {
   "name": "openbor-input-overlay",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Overlay de gamepad transparente para OpenBOR y OBS",
   "main": "main.js",
   "author": "openbor-input-overlay contributors",
@@ -38,11 +38,15 @@
       "target": [
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },

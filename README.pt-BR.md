@@ -11,6 +11,7 @@ Overlay transparente para Windows que transforma as teclas usadas no OpenBOR em 
 - [Instalação](#instalação)
 - [Início rápido](#início-rápido)
 - [Interface do overlay](#interface-do-overlay)
+- [Iluminação configurável](#iluminação-configurável)
 - [Entrada global e fallback local](#entrada-global-e-fallback-local)
 - [Mover e redimensionar](#mover-e-redimensionar)
 - [Trocar os controles de lado](#trocar-os-controles-de-lado)
@@ -116,9 +117,13 @@ npm.cmd run build
 - **Controle de direção:** stick visual ou D-pad, conforme `directionControl`.
 - **Botões centrais:** Select e Start.
 - **Botões de ação:** triângulo, círculo, cruz e quadrado; as skins Xbox e arcade usam outros símbolos.
-- **Barra inferior:** movimentação, tamanho, modo OBS, perfis, configuração de teclas e click-through.
+- **Barra inferior:** movimentação, tamanho, modo OBS, perfis, iluminação, configuração de teclas e click-through.
 
 O indicador fica verde quando a entrada global está ativa e amarelo quando o fallback local está ativo.
+
+## Iluminação configurável
+
+Clique em `Iluminación` na barra inferior ou escolha `Configurar iluminación` na bandeja. O painel controla separadamente a cor e a intensidade dos botões de ação/sistema e do D-pad/stick. Também controla uma trilha direcional: as posições anteriores do stick permanecem visíveis por alguns instantes, enquanto as direções liberadas no D-pad recebem um brilho que desaparece. As mudanças são visualizadas ao vivo, aceitam qualquer cor oferecida pelo seletor, persistem após reiniciar e não são sobrescritas ao mudar de skin ou perfil.
 
 ## Entrada global e fallback local
 
@@ -271,6 +276,15 @@ Antes de sobrescrever a configuração, o aplicativo cria `config.user.json.bak`
   "layout": "standard",
   "scale": 1,
   "opacity": 0.96,
+  "lighting": {
+    "buttonColor": "#59e4ff",
+    "buttonIntensity": 1,
+    "dpadColor": "#59e4ff",
+    "dpadIntensity": 0.65,
+    "trailEnabled": true,
+    "trailDuration": 240,
+    "trailIntensity": 0.55
+  },
   "showLabels": true,
   "alwaysOnTop": true,
   "clickThrough": false,
@@ -296,6 +310,13 @@ Antes de sobrescrever a configuração, o aplicativo cria `config.user.json.bak`
 | `layout` | string | `standard` ou `reversed` |
 | `scale` | number | Escala adicional do conteúdo visual |
 | `opacity` | number | Opacidade, normalmente de `0` a `1` |
+| `lighting.buttonColor` | string | Cor hexadecimal do brilho dos botões |
+| `lighting.buttonIntensity` | number | Intensidade dos botões de `0` a `1` |
+| `lighting.dpadColor` | string | Cor hexadecimal do brilho do D-pad ou stick |
+| `lighting.dpadIntensity` | number | Intensidade do D-pad ou stick de `0` a `1` |
+| `lighting.trailEnabled` | boolean | Ativa a trilha do stick e o brilho residual do D-pad |
+| `lighting.trailDuration` | number | Duração do efeito em milissegundos, de `80` a `600` |
+| `lighting.trailIntensity` | number | Opacidade inicial da trilha de `0` a `1` |
 | `showLabels` | boolean | Mostra ou oculta rótulos e a barra inferior |
 | `alwaysOnTop` | boolean | Mantém a janela sobre as demais |
 | `clickThrough` | boolean | Estado inicial e persistente do click-through |

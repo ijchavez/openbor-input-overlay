@@ -14,6 +14,7 @@ Overlay transparente para Windows que convierte las teclas usadas en OpenBOR en 
   - [Otros comandos](#otros-comandos)
 - [Inicio rápido](#inicio-rápido)
 - [Interfaz del overlay](#interfaz-del-overlay)
+- [Iluminación configurable](#iluminación-configurable)
 - [Input global y fallback local](#input-global-y-fallback-local)
 - [Mover y cambiar el tamaño](#mover-y-cambiar-el-tamaño)
 - [Cambiar los controles de lado](#cambiar-los-controles-de-lado)
@@ -132,12 +133,22 @@ La ventana contiene las siguientes áreas:
 - **Control de dirección:** stick visual o D-pad, según `directionControl`.
 - **Botones centrales:** Select y Start.
 - **Botones derechos:** triángulo, círculo, cruz y cuadrado; las skins Xbox y arcade cambian sus símbolos.
-- **Barra inferior:** acceso a movimiento, tamaño, modo OBS, perfiles, configuración de teclas y click-through.
+- **Barra inferior:** acceso a movimiento, tamaño, modo OBS, perfiles, iluminación, configuración de teclas y click-through.
 
 El color del indicador informa el estado del input:
 
 - **Verde:** input global activo.
 - **Amarillo:** fallback local activo.
+
+## Iluminación configurable
+
+Pulsá `Iluminación` en la barra inferior o elegí `Configurar iluminación` desde la bandeja. El panel permite ajustar por separado:
+
+- El color y la intensidad de los botones de acción, Select y Start.
+- El color y la intensidad del D-pad o stick.
+- Una estela configurable: posiciones anteriores para el stick y un afterglow al soltar direcciones en el D-pad.
+
+Los cambios se previsualizan en vivo, aceptan cualquier color hexadecimal seleccionado por el control de color y se guardan como estado general. Por eso se conservan al reiniciar y no cambian al alternar skins o cargar perfiles.
 
 ## Input global y fallback local
 
@@ -200,9 +211,9 @@ Se puede alternar mediante:
 - `Ctrl+Shift+I`.
 - El menú de la bandeja.
 
-Aunque esté en `ON`, los botones de click-through, configuración, perfiles y modo OBS conservan una pequeña zona interactiva al pasar el cursor. El resto de la ventana continúa siendo atravesable.
+Aunque esté en `ON`, los botones de click-through, configuración, perfiles, iluminación y modo OBS conservan una pequeña zona interactiva al pasar el cursor. El resto de la ventana continúa siendo atravesable.
 
-Durante los modos mover, configuración o perfiles, click-through se desactiva temporalmente. Al cerrar ese modo se restaura el valor anterior.
+Durante los modos mover, configuración, perfiles o iluminación, click-through se desactiva temporalmente. Al cerrar ese modo se restaura el valor anterior.
 
 Si el modo OBS oculta los controles, usá `Ctrl+Shift+I` o la bandeja para cambiar click-through.
 
@@ -488,6 +499,15 @@ Ejemplo resumido:
   "layout": "standard",
   "scale": 1,
   "opacity": 0.96,
+  "lighting": {
+    "buttonColor": "#59e4ff",
+    "buttonIntensity": 1,
+    "dpadColor": "#59e4ff",
+    "dpadIntensity": 0.65,
+    "trailEnabled": true,
+    "trailDuration": 240,
+    "trailIntensity": 0.55
+  },
   "showLabels": true,
   "alwaysOnTop": true,
   "clickThrough": false,
@@ -521,6 +541,13 @@ Ejemplo resumido:
 | `layout` | string | `standard` o `reversed`; define qué grupo aparece a cada lado |
 | `scale` | number | Escala adicional aplicada al contenido visual |
 | `opacity` | number | Opacidad del overlay, normalmente entre `0` y `1` |
+| `lighting.buttonColor` | string | Color hexadecimal del brillo de los botones |
+| `lighting.buttonIntensity` | number | Intensidad de los botones entre `0` y `1` |
+| `lighting.dpadColor` | string | Color hexadecimal del brillo del D-pad o stick |
+| `lighting.dpadIntensity` | number | Intensidad del D-pad o stick entre `0` y `1` |
+| `lighting.trailEnabled` | boolean | Activa la estela del stick y el afterglow del D-pad |
+| `lighting.trailDuration` | number | Duración del efecto en milisegundos, entre `80` y `600` |
+| `lighting.trailIntensity` | number | Opacidad inicial de la estela entre `0` y `1` |
 | `showLabels` | boolean | Muestra u oculta etiquetas y barra inferior |
 | `alwaysOnTop` | boolean | Mantiene la ventana sobre otras ventanas |
 | `clickThrough` | boolean | Estado inicial y persistente de click-through |
@@ -740,7 +767,7 @@ Cerrá cualquier proceso iniciado desde otra copia del repositorio.
 - Solo Windows está contemplado y probado como plataforma principal.
 - Los gamepads usan un mapping USB estándar fijo; todavía no se pueden reasignar sus botones ni usar botones del mouse.
 - Hay un solo overlay y un solo jugador por instancia.
-- Los perfiles todavía no guardan posición, opacidad, click-through ni tipo de dirección.
+- Los perfiles todavía no guardan posición, opacidad, click-through, iluminación ni tipo de dirección.
 - No existe todavía una ventana de configuración separada.
 - Los perfiles se pueden compartir como archivos JSON, pero todavía no hay botones dedicados de importar/exportar.
 - No hay actualización automática.

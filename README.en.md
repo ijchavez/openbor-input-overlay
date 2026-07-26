@@ -11,6 +11,7 @@ A transparent Windows overlay that turns the keys used in OpenBOR into a visual 
 - [Installation](#installation)
 - [Quick start](#quick-start)
 - [Overlay interface](#overlay-interface)
+- [Configurable lighting](#configurable-lighting)
 - [Global input and local fallback](#global-input-and-local-fallback)
 - [Move and resize](#move-and-resize)
 - [Swap the controls](#swap-the-controls)
@@ -114,9 +115,13 @@ npm.cmd run build
 - **Direction control:** visual stick or D-pad, selected with `directionControl`.
 - **Center buttons:** Select and Start.
 - **Action buttons:** triangle, circle, cross, and square; Xbox and arcade skins use different symbols.
-- **Bottom bar:** move mode, size, OBS mode, profiles, key configuration, and click-through.
+- **Bottom bar:** move mode, size, OBS mode, profiles, lighting, key configuration, and click-through.
 
 The input status is green for active global input and yellow for active local fallback.
+
+## Configurable lighting
+
+Click `Iluminación` in the bottom bar or choose `Configurar iluminación` from the tray. The panel independently controls the color and intensity of the action/system buttons and the D-pad/stick. It also controls a direction trail: previous stick positions remain briefly visible, while released D-pad directions receive a fading afterglow. Changes preview live, accept any color exposed by the color picker, persist across restarts, and are not overwritten by skin or profile changes.
 
 ## Global input and local fallback
 
@@ -269,6 +274,15 @@ Before overwriting settings, the application creates `config.user.json.bak` or t
   "layout": "standard",
   "scale": 1,
   "opacity": 0.96,
+  "lighting": {
+    "buttonColor": "#59e4ff",
+    "buttonIntensity": 1,
+    "dpadColor": "#59e4ff",
+    "dpadIntensity": 0.65,
+    "trailEnabled": true,
+    "trailDuration": 240,
+    "trailIntensity": 0.55
+  },
   "showLabels": true,
   "alwaysOnTop": true,
   "clickThrough": false,
@@ -294,6 +308,13 @@ Before overwriting settings, the application creates `config.user.json.bak` or t
 | `layout` | string | `standard` or `reversed` |
 | `scale` | number | Additional visual content scale |
 | `opacity` | number | Overlay opacity, normally `0` to `1` |
+| `lighting.buttonColor` | string | Hex color for the button glow |
+| `lighting.buttonIntensity` | number | Button intensity from `0` to `1` |
+| `lighting.dpadColor` | string | Hex color for the D-pad or stick glow |
+| `lighting.dpadIntensity` | number | D-pad or stick intensity from `0` to `1` |
+| `lighting.trailEnabled` | boolean | Enables the stick trail and D-pad afterglow |
+| `lighting.trailDuration` | number | Effect duration in milliseconds, from `80` to `600` |
+| `lighting.trailIntensity` | number | Initial trail opacity from `0` to `1` |
 | `showLabels` | boolean | Shows or hides labels and the bottom bar |
 | `alwaysOnTop` | boolean | Keeps the window above other windows |
 | `clickThrough` | boolean | Initial and persisted click-through state |
@@ -413,7 +434,7 @@ Exit from the tray, inspect `config.user.json` and `config.user.json.bak`, resto
 - Windows is the only primary tested platform.
 - Gamepads use a fixed standard mapping; their buttons and mouse buttons cannot be remapped yet.
 - One overlay and one player are supported per instance.
-- Profiles do not store position, opacity, click-through, or direction-control type.
+- Profiles do not store position, opacity, click-through, lighting, or direction-control type.
 - There is no separate settings window, dedicated profile import/export, or automatic updater.
 - Resize shortcuts are not configurable in `config.json`.
 - Exclusive fullscreen can prevent the overlay from appearing.

@@ -19,12 +19,42 @@ let configMode = false;
 let clickThroughBeforeConfig = false;
 let profileMode = false;
 let clickThroughBeforeProfile = false;
+let lightingMode = false;
+let clickThroughBeforeLighting = false;
 let pointerInteractive = false;
 
 const skins = ['playstation', 'xbox', 'arcade'];
 const MAX_WINDOW = { width: 760, height: 330 };
 const MIN_WINDOW = { width: 380, height: 165 };
 const MAPPABLE_BUTTONS = new Set(['up', 'down', 'left', 'right', 'square', 'cross', 'circle', 'triangle', 'start', 'select']);
+const DEFAULT_LIGHTING = {
+  buttonColor: '#59e4ff',
+  buttonIntensity: 1,
+  dpadColor: '#59e4ff',
+  dpadIntensity: 0.65,
+  trailEnabled: true,
+  trailDuration: 240,
+  trailIntensity: 0.55
+};
+
+function normalizeLighting(value) {
+  const lighting = value && typeof value === 'object' ? value : {};
+  const color = (candidate, fallback) => /^#[0-9a-f]{6}$/i.test(candidate || '') ? candidate.toLowerCase() : fallback;
+  const intensity = (candidate, fallback) => {
+    const number = Number(candidate);
+    return Number.isFinite(number) ? Math.max(0, Math.min(1, number)) : fallback;
+  };
+  const duration = Number(lighting.trailDuration);
+  return {
+    buttonColor: color(lighting.buttonColor, DEFAULT_LIGHTING.buttonColor),
+    buttonIntensity: intensity(lighting.buttonIntensity, DEFAULT_LIGHTING.buttonIntensity),
+    dpadColor: color(lighting.dpadColor, DEFAULT_LIGHTING.dpadColor),
+    dpadIntensity: intensity(lighting.dpadIntensity, DEFAULT_LIGHTING.dpadIntensity),
+    trailEnabled: lighting.trailEnabled !== false,
+    trailDuration: Number.isFinite(duration) ? Math.round(Math.max(80, Math.min(600, duration))) : DEFAULT_LIGHTING.trailDuration,
+    trailIntensity: intensity(lighting.trailIntensity, DEFAULT_LIGHTING.trailIntensity)
+  };
+}
 
 function defaultProfilesDirectory() {
   if (!app.isPackaged) return path.join(__dirname, 'profiles');
@@ -138,14 +168,14 @@ function setClickThrough(enabled) {
 }
 
 function toggleClickThrough() {
-  if (moveMode || configMode || profileMode) return;
+  if (moveMode || configMode || profileMode || lightingMode) return;
   setClickThrough(!clickThrough);
   config.clickThrough = clickThrough;
   scheduleStateSave();
 }
 
 function toggleMoveMode() {
-  if (configMode || profileMode) return;
+  if (configMode || profileMode || lightingMode) return;
   moveMode = !moveMode;
   if (moveMode) {
     clickThroughBeforeMove = clickThrough;
@@ -159,7 +189,7 @@ function toggleMoveMode() {
 }
 
 function toggleConfigMode() {
-  if (moveMode || profileMode) return;
+  if (moveMode || profileMode || lightingMode) return;
   configMode = !configMode;
   if (configMode) {
     clickThroughBeforeConfig = clickThrough;
@@ -173,7 +203,7 @@ function toggleConfigMode() {
 }
 
 function toggleProfileMode() {
-  if (moveMode || configMode) return;
+  if (moveMode || configMode || lightingMode) return;
   profileMode = !profileMode;
   if (profileMode) {
     clickThroughBeforeProfile = clickThrough;
@@ -186,8 +216,22 @@ function toggleProfileMode() {
   updateTrayMenu();
 }
 
-function toggleStreamMode() {
+function toggleLightingMode() {
   if (moveMode || configMode || profileMode) return;
+  lightingMode = !lightingMode;
+  if (lightingMode) {
+    clickThroughBeforeLighting = clickThrough;
+    setClickThrough(false);
+    showWindow(true);
+  } else {
+    setClickThrough(clickThroughBeforeLighting);
+  }
+  send('lighting-mode', lightingMode);
+  updateTrayMenu();
+}
+
+function toggleStreamMode() {
+  if (moveMode || configMode || profileMode || lightingMode) return;
   config.streamMode = !config.streamMode;
   send('stream-mode', config.streamMode);
   scheduleStateSave();
@@ -269,6 +313,7 @@ function updateTrayMenu() {
     { label: 'Perfiles', submenu: profileItems },
     { label: profileMode ? 'Cerrar perfiles' : 'Administrar perfiles', click: toggleProfileMode },
     { label: configMode ? 'Cerrar configuración' : 'Configurar teclas', click: toggleConfigMode },
+    { label: lightingMode ? 'Cerrar iluminación' : 'Configurar iluminación', click: toggleLightingMode },
     { label: 'Cambiar skin', click: cycleSkin },
     { label: 'Controles invertidos', type: 'checkbox', checked: config?.layout === 'reversed', click: toggleLayout },
     { type: 'separator' },
@@ -287,6 +332,7 @@ async function createTray() {
 app.whenReady().then(async () => {
   app.setAppUserModelId('com.openbor.inputoverlay');
   config = loadConfig(app);
+  config.lighting = normalizeLighting(config.lighting);
   profileStore = new ProfileStore(config.profilesDirectory || defaultProfilesDirectory());
   profileStore.migrate(config.profiles);
   config.profiles = {};
@@ -310,6 +356,7 @@ ipcMain.on('toggle-click-through', toggleClickThrough);
 ipcMain.on('toggle-move-mode', toggleMoveMode);
 ipcMain.on('toggle-config-mode', toggleConfigMode);
 ipcMain.on('toggle-profile-mode', toggleProfileMode);
+ipcMain.on('toggle-lighting-mode', toggleLightingMode);
 ipcMain.on('toggle-stream-mode', toggleStreamMode);
 ipcMain.on('toggle-layout', toggleLayout);
 ipcMain.on('adjust-window-size', (_event, direction) => adjustWindowSize(Math.sign(Number(direction))));
@@ -375,6 +422,13 @@ ipcMain.handle('delete-profile', (_event, name) => {
     return { ok: false, error: error.message };
   }
 });
+ipcMain.handle('set-lighting', (_event, value) => {
+  config.lighting = normalizeLighting(value);
+  send('lighting', config.lighting);
+  scheduleStateSave();
+  return { ok: true, lighting: config.lighting };
+});
+
 ipcMain.handle('set-mapping', (_event, { button, code }) => {
   if (!MAPPABLE_BUTTONS.has(button) || typeof code !== 'string' || code.length > 40) return { ok: false, error: 'Asignación inválida' };
   const mapping = Object.fromEntries(Object.entries(config.mapping).filter(([existingCode, existingButton]) => existingCode !== code && existingButton !== button));

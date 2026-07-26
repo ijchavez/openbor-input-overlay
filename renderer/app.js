@@ -5,6 +5,7 @@ let mappingMode = false;
 let selectedMappingButton = null;
 let keyboardStatus = { source: 'local', message: 'Inicializando…' };
 let activeGamepadName = null;
+let lastStickPosition = { x: 0, y: 0 };
 
 function setLayout(layout) {
   document.body.classList.toggle('layout-reversed', layout === 'reversed');
@@ -72,6 +73,74 @@ async function refreshProfiles(selectedProfile = null) {
   setProfileDirectory(data.directory);
 }
 
+function normalizeLighting(value = {}) {
+  const clamp = (number, fallback) => Number.isFinite(Number(number)) ? Math.max(0, Math.min(1, Number(number))) : fallback;
+  const color = (candidate, fallback) => /^#[0-9a-f]{6}$/i.test(candidate || '') ? candidate.toLowerCase() : fallback;
+  const duration = Number(value.trailDuration);
+  return {
+    buttonColor: color(value.buttonColor, '#59e4ff'),
+    buttonIntensity: clamp(value.buttonIntensity, 1),
+    dpadColor: color(value.dpadColor, '#59e4ff'),
+    dpadIntensity: clamp(value.dpadIntensity, 0.65),
+    trailEnabled: value.trailEnabled !== false,
+    trailDuration: Number.isFinite(duration) ? Math.round(Math.max(80, Math.min(600, duration))) : 240,
+    trailIntensity: clamp(value.trailIntensity, 0.55)
+  };
+}
+
+function setLightingVariables(group, color, intensity) {
+  const red = parseInt(color.slice(1, 3), 16);
+  const green = parseInt(color.slice(3, 5), 16);
+  const blue = parseInt(color.slice(5, 7), 16);
+  const strength = Math.max(0, Math.min(1, intensity));
+  const root = document.documentElement.style;
+  const rgba = (alpha) => `rgba(${red},${green},${blue},${Math.max(0, Math.min(1, alpha)).toFixed(3)})`;
+  root.setProperty(`--${group}-light-color`, color);
+  root.setProperty(`--${group}-light-fill`, rgba(0.12 + strength * 0.8));
+  root.setProperty(`--${group}-light-dark`, rgba(0.08 + strength * 0.68));
+  root.setProperty(`--${group}-light-shadow`, rgba(strength * 0.9));
+  root.setProperty(`--${group}-light-inner`, `rgba(255,255,255,${(strength * 0.35).toFixed(3)})`);
+  root.setProperty(`--${group}-light-radius`, `${Math.round(4 + strength * 18)}px`);
+}
+
+function applyLighting(value) {
+  const lighting = normalizeLighting(value);
+  if (config) config.lighting = lighting;
+  setLightingVariables('button', lighting.buttonColor, lighting.buttonIntensity);
+  setLightingVariables('dpad', lighting.dpadColor, lighting.dpadIntensity);
+  document.querySelector('#buttonLightColor').value = lighting.buttonColor;
+  document.querySelector('#buttonLightIntensity').value = Math.round(lighting.buttonIntensity * 100);
+  document.querySelector('#buttonLightValue').value = `${Math.round(lighting.buttonIntensity * 100)}%`;
+  document.querySelector('#dpadLightColor').value = lighting.dpadColor;
+  document.querySelector('#dpadLightIntensity').value = Math.round(lighting.dpadIntensity * 100);
+  document.querySelector('#dpadLightValue').value = `${Math.round(lighting.dpadIntensity * 100)}%`;
+  document.querySelector('#trailEnabled').checked = lighting.trailEnabled;
+  document.querySelector('#trailDuration').value = lighting.trailDuration;
+  document.querySelector('#trailDurationValue').value = `${lighting.trailDuration} ms`;
+  document.querySelector('#trailIntensity').value = Math.round(lighting.trailIntensity * 100);
+  document.querySelector('#trailIntensityValue').value = `${Math.round(lighting.trailIntensity * 100)}%`;
+  document.body.classList.toggle('trail-enabled', lighting.trailEnabled);
+  document.documentElement.style.setProperty('--trail-duration', `${lighting.trailDuration}ms`);
+  document.documentElement.style.setProperty('--trail-opacity', lighting.trailIntensity);
+  if (!lighting.trailEnabled) {
+    document.querySelectorAll('.stick-trail').forEach((element) => element.remove());
+    document.querySelectorAll('.dpad-key.afterglow').forEach((element) => element.classList.remove('afterglow'));
+  }
+  return lighting;
+}
+
+function lightingFromInputs() {
+  return {
+    buttonColor: document.querySelector('#buttonLightColor').value,
+    buttonIntensity: Number(document.querySelector('#buttonLightIntensity').value) / 100,
+    dpadColor: document.querySelector('#dpadLightColor').value,
+    dpadIntensity: Number(document.querySelector('#dpadLightIntensity').value) / 100,
+    trailEnabled: document.querySelector('#trailEnabled').checked,
+    trailDuration: Number(document.querySelector('#trailDuration').value),
+    trailIntensity: Number(document.querySelector('#trailIntensity').value) / 100
+  };
+}
+
 function updateFitScale() {
   const configuredScale = Number(config?.scale) || 1;
   const fit = Math.min(window.innerWidth / 760, window.innerHeight / 330, 1);
@@ -90,16 +159,52 @@ function setSkin(skin) {
   for (const [button, label] of Object.entries(skinLabels[skin] || skinLabels.playstation)) buttons.get(button).querySelector('span').textContent = label;
 }
 
+function triggerDpadAfterglow(element) {
+  if (!config?.lighting?.trailEnabled) return;
+  clearTimeout(element.afterglowTimer);
+  element.classList.remove('afterglow');
+  void element.offsetWidth;
+  element.classList.add('afterglow');
+  element.afterglowTimer = setTimeout(() => element.classList.remove('afterglow'), config.lighting.trailDuration + 40);
+}
+
+function emitStickTrail({ x, y }) {
+  if (!config?.lighting?.trailEnabled || config.directionControl !== 'stick') return;
+  const gate = document.querySelector('.stick-gate');
+  const knob = gate?.querySelector('.stick-knob');
+  if (!gate || !knob) return;
+  const trail = document.createElement('div');
+  trail.className = 'stick-trail';
+  trail.style.setProperty('--trail-x', `${x * 22}px`);
+  trail.style.setProperty('--trail-y', `${y * 22}px`);
+  gate.insertBefore(trail, knob);
+  const particles = gate.querySelectorAll('.stick-trail');
+  if (particles.length > 10) particles[0].remove();
+  setTimeout(() => trail.remove(), config.lighting.trailDuration + 40);
+}
+
 function updateButton(button) {
   const active = [...pressedCodes.values()].includes(button);
-  buttons.get(button)?.classList.toggle('pressed', active);
-  if (['up', 'down', 'left', 'right'].includes(button)) updateStick();
+  const element = buttons.get(button);
+  const wasActive = element?.classList.contains('pressed');
+  element?.classList.toggle('pressed', active);
+  if (['up', 'down', 'left', 'right'].includes(button)) {
+    if (active) {
+      clearTimeout(element?.afterglowTimer);
+      element?.classList.remove('afterglow');
+    } else if (wasActive) {
+      triggerDpadAfterglow(element);
+    }
+    updateStick();
+  }
 }
 
 function updateStick() {
   const active = new Set(pressedCodes.values());
   const x = (active.has('right') ? 1 : 0) - (active.has('left') ? 1 : 0);
   const y = (active.has('down') ? 1 : 0) - (active.has('up') ? 1 : 0);
+  if (x !== lastStickPosition.x || y !== lastStickPosition.y) emitStickTrail(lastStickPosition);
+  lastStickPosition = { x, y };
   document.documentElement.style.setProperty('--stick-x', `${x * 22}px`);
   document.documentElement.style.setProperty('--stick-y', `${y * 22}px`);
   document.querySelector('.analog-stick').classList.toggle('active', x !== 0 || y !== 0);
@@ -214,6 +319,7 @@ window.overlay.onConfig((value) => {
   document.documentElement.style.setProperty('--ui-scale', config.scale);
   updateFitScale();
   document.documentElement.style.setProperty('--ui-opacity', config.opacity);
+  applyLighting(config.lighting);
   document.body.classList.toggle('hide-labels', !config.showLabels);
   refreshMappingLabels();
 });
@@ -233,6 +339,13 @@ window.overlay.onMoveMode((enabled) => {
   const button = document.querySelector('#moveMode');
   button.classList.toggle('active', enabled);
   button.textContent = enabled ? 'Terminar de mover' : 'Ctrl+Shift+M · Mover';
+});
+window.overlay.onLighting((lighting) => applyLighting(lighting));
+window.overlay.onLightingMode((enabled) => {
+  document.body.classList.toggle('lighting-mode', enabled);
+  const button = document.querySelector('#lightingMode');
+  button.classList.toggle('active', enabled);
+  button.textContent = enabled ? 'Cerrar iluminación' : 'Iluminación';
 });
 window.overlay.onProfileMode(async (enabled) => {
   document.body.classList.toggle('profile-mode', enabled);
@@ -256,6 +369,7 @@ document.querySelector('#clickMode').addEventListener('click', () => window.over
 document.querySelector('#moveMode').addEventListener('click', () => window.overlay.toggleMoveMode());
 document.querySelector('#configureMode').addEventListener('click', () => window.overlay.toggleConfigMode());
 document.querySelector('#profileMode').addEventListener('click', () => window.overlay.toggleProfileMode());
+document.querySelector('#lightingMode').addEventListener('click', () => window.overlay.toggleLightingMode());
 document.querySelector('#streamMode').addEventListener('click', () => window.overlay.toggleStreamMode());
 document.querySelector('#swapLayout').addEventListener('click', () => window.overlay.toggleLayout());
 document.querySelector('#chooseProfileDirectory').addEventListener('click', async () => {
@@ -311,12 +425,20 @@ for (const element of document.querySelectorAll('[data-map-action]')) {
     document.querySelector('#mappingHelp').textContent = 'Ahora presioná la tecla que querés usar';
   });
 }
+for (const input of document.querySelectorAll('#lightingPanel input')) {
+  input.addEventListener('input', () => applyLighting(lightingFromInputs()));
+  input.addEventListener('change', async () => {
+    const result = await window.overlay.setLighting(lightingFromInputs());
+    if (result.ok) applyLighting(result.lighting);
+  });
+}
+
 document.querySelector('#sizeDown').addEventListener('click', () => window.overlay.adjustWindowSize(-1));
 document.querySelector('#sizeUp').addEventListener('click', () => window.overlay.adjustWindowSize(1));
 
 let interactiveHover = false;
 window.addEventListener('mousemove', (event) => {
-  const next = Boolean(event.target.closest?.('#clickMode, #configureMode, #profileMode, #streamMode'));
+  const next = Boolean(event.target.closest?.('#clickMode, #configureMode, #profileMode, #lightingMode, #streamMode'));
   if (next === interactiveHover) return;
   interactiveHover = next;
   window.overlay.setInteractiveHover(next);
