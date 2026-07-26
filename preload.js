@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('overlay', {
   onMoveMode: (callback) => ipcRenderer.on('move-mode', (_e, value) => callback(value)),
   onConfigMode: (callback) => ipcRenderer.on('config-mode', (_e, value) => callback(value)),
   onProfileMode: (callback) => ipcRenderer.on('profile-mode', (_e, value) => callback(value)),
+  onLightingMode: (callback) => ipcRenderer.on('lighting-mode', (_e, value) => callback(value)),
+  onLighting: (callback) => ipcRenderer.on('lighting', (_e, value) => callback(value)),
   onStreamMode: (callback) => ipcRenderer.on('stream-mode', (_e, value) => callback(value)),
   onLayout: (callback) => ipcRenderer.on('layout', (_e, value) => callback(value)),
   localInput: (value) => ipcRenderer.send('local-input', value),
@@ -16,6 +18,7 @@ contextBridge.exposeInMainWorld('overlay', {
   toggleMoveMode: () => ipcRenderer.send('toggle-move-mode'),
   toggleConfigMode: () => ipcRenderer.send('toggle-config-mode'),
   toggleProfileMode: () => ipcRenderer.send('toggle-profile-mode'),
+  toggleLightingMode: () => ipcRenderer.send('toggle-lighting-mode'),
   toggleStreamMode: () => ipcRenderer.send('toggle-stream-mode'),
   toggleLayout: () => ipcRenderer.send('toggle-layout'),
   listProfiles: () => ipcRenderer.invoke('list-profiles'),
@@ -24,6 +27,7 @@ contextBridge.exposeInMainWorld('overlay', {
   loadProfile: (name) => ipcRenderer.invoke('load-profile', name),
   deleteProfile: (name) => ipcRenderer.invoke('delete-profile', name),
   setMapping: (button, code) => ipcRenderer.invoke('set-mapping', { button, code }),
+  setLighting: (lighting) => ipcRenderer.invoke('set-lighting', lighting),
   adjustWindowSize: (direction) => ipcRenderer.send('adjust-window-size', direction),
   setInteractiveHover: (interactive) => ipcRenderer.send('interactive-hover', interactive)
 });
