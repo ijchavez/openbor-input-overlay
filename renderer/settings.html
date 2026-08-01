@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Configuración - OpenBOR Input Overlay</title>
+  <link rel="stylesheet" href="settings.css?v=1.2.0-trail-layout-fix">
+</head>
+<body>
+  <div class="settings-shell">
+    <aside class="sidebar">
+      <div class="settings-brand">
+        <span class="brand-mark">OB</span>
+        <div><strong>INPUT OVERLAY</strong><small>Configuración 1.2</small></div>
+      </div>
+      <nav aria-label="Secciones de configuración">
+        <button class="tab-button active" data-tab="general"><span>01</span>General</button>
+        <button class="tab-button" data-tab="controls"><span>02</span>Controles y mapping</button>
+        <button class="tab-button" data-tab="appearance"><span>03</span>Apariencia e iluminación</button>
+        <button class="tab-button" data-tab="profiles"><span>04</span>Perfiles</button>
+        <button class="tab-button" data-tab="shortcuts"><span>05</span>Atajos y OBS</button>
+      </nav>
+      <div class="sidebar-state">
+        <span id="overlayStateDot"></span>
+        <div><strong id="overlayStateLabel">Overlay activo</strong><small id="overlayStateDetail">Modo normal</small></div>
+      </div>
+    </aside>
+
+    <main class="settings-content">
+      <header class="content-header">
+        <div>
+          <p>OPENBOR INPUT OVERLAY</p>
+          <h1 id="sectionTitle">General</h1>
+        </div>
+        <div id="saveStatus" role="status">Cambios guardados automáticamente</div>
+      </header>
+
+      <section class="tab-panel active" data-panel="general">
+        <div class="section-intro">
+          <h2>Comportamiento general</h2>
+          <p>Ajustá la representación y la presencia del overlay sin reducir el espacio de los controles.</p>
+        </div>
+        <div class="card-grid two-columns">
+          <article class="settings-card">
+            <h3>Control mostrado</h3>
+            <label>Estilo visual
+              <select id="skin">
+                <option value="playstation">PlayStation</option>
+                <option value="xbox">Xbox</option>
+                <option value="arcade">Arcade</option>
+              </select>
+            </label>
+            <label>Direcciones
+              <select id="directionControl">
+                <option value="stick">Stick analógico</option>
+                <option value="dpad">D-pad</option>
+              </select>
+            </label>
+            <label>Distribución
+              <select id="layout">
+                <option value="standard">Direcciones a la izquierda</option>
+                <option value="reversed">Direcciones a la derecha</option>
+              </select>
+            </label>
+          </article>
+          <article class="settings-card">
+            <h3>Presentación</h3>
+            <label class="range-row">Escala
+              <input id="scale" type="range" min="65" max="125" step="5">
+              <output id="scaleValue">100%</output>
+            </label>
+            <label class="range-row">Opacidad
+              <input id="opacity" type="range" min="20" max="100" step="1">
+              <output id="opacityValue">96%</output>
+            </label>
+            <label class="switch-row"><span><strong>Mostrar etiquetas</strong><small>Teclas y ayudas en el overlay</small></span><input id="showLabels" type="checkbox"></label>
+            <label class="switch-row"><span><strong>Siempre visible</strong><small>Mantener sobre otras ventanas</small></span><input id="alwaysOnTop" type="checkbox"></label>
+          </article>
+        </div>
+      </section>
+
+      <section class="tab-panel" data-panel="controls">
+        <div class="section-intro">
+          <h2>Controles y mapping</h2>
+          <p>Seleccioná una acción y luego presioná la tecla que quieras asignar.</p>
+        </div>
+        <article class="settings-card mapping-card">
+          <div id="mappingHelp" class="inline-notice">Elegí un control para comenzar.</div>
+          <div class="mapping-grid">
+            <button data-map-action="up"><b>↑</b><span>ARRIBA</span><kbd>—</kbd></button>
+            <button data-map-action="down"><b>↓</b><span>ABAJO</span><kbd>—</kbd></button>
+            <button data-map-action="left"><b>←</b><span>IZQUIERDA</span><kbd>—</kbd></button>
+            <button data-map-action="right"><b>→</b><span>DERECHA</span><kbd>—</kbd></button>
+            <button data-map-action="triangle"><b>△</b><span>SUPERIOR</span><kbd>—</kbd></button>
+            <button data-map-action="circle"><b>○</b><span>DERECHO</span><kbd>—</kbd></button>
+            <button data-map-action="cross"><b>✕</b><span>INFERIOR</span><kbd>—</kbd></button>
+            <button data-map-action="square"><b>□</b><span>IZQUIERDO</span><kbd>—</kbd></button>
+            <button data-map-action="select"><b>−</b><span>SELECT</span><kbd>—</kbd></button>
+            <button data-map-action="start"><b>+</b><span>START</span><kbd>—</kbd></button>
+          </div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="appearance">
+        <div class="section-intro">
+          <h2>Apariencia, iluminación y estelas</h2>
+          <p>Los botones y las direcciones pueden tener colores e intensidades independientes.</p>
+        </div>
+        <div class="card-grid two-columns">
+          <article class="settings-card light-card">
+            <div class="card-heading"><div><h3>Botones</h3><p>Acciones y botones de sistema</p></div><div class="light-preview button-preview">A</div></div>
+            <label class="color-row">Color <input id="buttonLightColor" type="color"></label>
+            <label class="range-row">Intensidad <input id="buttonLightIntensity" type="range" min="0" max="100" step="1"><output id="buttonLightValue"></output></label>
+          </article>
+          <article class="settings-card light-card">
+            <div class="card-heading"><div><h3>D-pad / Stick</h3><p>Direcciones y movimiento</p></div><div class="light-preview dpad-preview">▲</div></div>
+            <label class="color-row">Color <input id="dpadLightColor" type="color"></label>
+            <label class="range-row">Intensidad <input id="dpadLightIntensity" type="range" min="0" max="100" step="1"><output id="dpadLightValue"></output></label>
+          </article>
+        </div>
+        <article class="settings-card trail-card">
+          <label class="switch-row"><span><strong>Estela de direcciones</strong><small>Conserva brevemente las posiciones anteriores</small></span><input id="trailEnabled" type="checkbox"></label>
+          <label class="range-row">Duración <input id="trailDuration" type="range" min="80" max="600" step="20"><output id="trailDurationValue"></output></label>
+          <label class="range-row">Intensidad <input id="trailIntensity" type="range" min="0" max="100" step="1"><output id="trailIntensityValue"></output></label>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="profiles">
+        <div class="section-intro">
+          <h2>Perfiles</h2>
+          <p>Guardá y recuperá mapping, tamaño, skin y distribución como una sola configuración.</p>
+        </div>
+        <article class="settings-card profile-card">
+          <div class="profile-directory">
+            <div><small>CARPETA DE PERFILES</small><strong id="profileDirectory">Sin carpeta seleccionada</strong></div>
+            <button id="chooseProfileDirectory" class="secondary">Elegir carpeta</button>
+          </div>
+          <div class="profile-columns">
+            <div>
+              <label>Nombre del perfil<input id="profileName" maxlength="40" placeholder="Ej: OpenBOR clásico"></label>
+              <button id="saveProfile" class="primary">Crear o actualizar perfil</button>
+            </div>
+            <div>
+              <label>Perfiles guardados<select id="profileList"></select></label>
+              <div class="button-row"><button id="loadProfile" class="primary">Cargar</button><button id="deleteProfile" class="danger">Eliminar</button></div>
+            </div>
+          </div>
+          <div id="profileStatus" class="inline-notice"></div>
+        </article>
+      </section>
+
+      <section class="tab-panel" data-panel="shortcuts">
+        <div class="section-intro">
+          <h2>Atajos y comportamiento de OBS</h2>
+          <p>Configurá los accesos globales y controlá el modo de transmisión desde una superficie estable.</p>
+        </div>
+        <div class="card-grid two-columns">
+          <article class="settings-card shortcuts-card">
+            <h3>Atajos globales</h3>
+            <label>Mostrar / ocultar<input id="hotkeyToggleVisibility" type="text"></label>
+            <label>Cambiar skin<input id="hotkeyCycleSkin" type="text"></label>
+            <label>Click-through<input id="hotkeyToggleClickThrough" type="text"></label>
+            <label>Modo mover<input id="hotkeyToggleMoveMode" type="text"></label>
+            <label>Modo OBS<input id="hotkeyToggleStreamMode" type="text"></label>
+            <button id="saveHotkeys" class="primary">Aplicar atajos</button>
+            <div id="hotkeyStatus" class="inline-notice"></div>
+          </article>
+          <article class="settings-card obs-card">
+            <h3>Modo OBS</h3>
+            <p>Oculta la cabecera y las acciones rápidas para dejar únicamente los inputs en la captura.</p>
+            <div class="obs-preview"><span>CAPTURA LIMPIA</span><div><i></i><i></i><i></i><i></i></div></div>
+            <button id="toggleObs" class="primary">Activar modo OBS</button>
+            <p class="behavior-note">El modo mover puede activarse temporalmente sin perder el estado de OBS.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="settings.js?v=1.2.0-trail-pointer-fix"></script>
+</body>
+</html>

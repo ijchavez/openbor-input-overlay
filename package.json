@@ -1,12 +1,13 @@
 {
   "name": "openbor-input-overlay",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Overlay de gamepad transparente para OpenBOR y OBS",
   "main": "main.js",
   "author": "openbor-input-overlay contributors",
   "license": "MIT",
   "scripts": {
     "start": "electron .",
+    "test": "node --test \"test/*.test.js\"",
     "dev": "electron . --dev",
     "build": "electron-builder --win --x64",
     "build:portable": "electron-builder --win portable --x64",

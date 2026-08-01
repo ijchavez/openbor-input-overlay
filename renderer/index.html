@@ -1,59 +1,21 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OpenBOR Input Overlay</title><link rel="stylesheet" href="styles.css"></head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OpenBOR Input Overlay</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="overlay-v12.css?v=1.2.0-obs-guide">
+</head>
 <body>
   <main id="overlay" class="skin-playstation">
     <section class="controller" aria-label="Gamepad input overlay">
-      <header class="topbar drag-region"><div class="brand"><span class="brand-mark">OB</span><span>INPUT OVERLAY</span></div><div id="moveHandle">⠿ ARRASTRAR PARA MOVER</div><div id="status" class="status local"><i></i><span>Inicializando…</span></div></header>
-      <section id="mappingPanel" aria-label="Configurar teclas">
-        <div class="mapping-title">CONFIGURAR TECLAS</div>
-        <div id="mappingHelp">Elegí un control y después presioná una tecla</div>
-        <div class="mapping-grid">
-          <button data-map-action="up"><b>↑</b><span>ARRIBA</span><kbd>—</kbd></button>
-          <button data-map-action="down"><b>↓</b><span>ABAJO</span><kbd>—</kbd></button>
-          <button data-map-action="left"><b>←</b><span>IZQUIERDA</span><kbd>—</kbd></button>
-          <button data-map-action="right"><b>→</b><span>DERECHA</span><kbd>—</kbd></button>
-          <button data-map-action="triangle"><b>△</b><span>SUPERIOR</span><kbd>—</kbd></button>
-          <button data-map-action="circle"><b>○</b><span>DERECHO</span><kbd>—</kbd></button>
-          <button data-map-action="cross"><b>✕</b><span>INFERIOR</span><kbd>—</kbd></button>
-          <button data-map-action="square"><b>□</b><span>IZQUIERDO</span><kbd>—</kbd></button>
-          <button data-map-action="select"><b>−</b><span>SELECT</span><kbd>—</kbd></button>
-          <button data-map-action="start"><b>+</b><span>START</span><kbd>—</kbd></button>
-        </div>
-      </section>
-      <section id="profilePanel" aria-label="Perfiles">
-        <div class="profile-title">PERFILES</div>
-        <p>Guardá y recuperá teclas, tamaño, skin y layout juntos.</p>
-        <div class="profile-folder"><span id="profileDirectory">Carpeta de perfiles</span><button id="chooseProfileDirectory">Elegir carpeta</button></div>
-        <label>Nombre del perfil<input id="profileName" maxlength="40" placeholder="Ej: OpenBOR clásico"></label>
-        <button id="saveProfile">Crear / actualizar perfil</button>
-        <label>Perfiles guardados<select id="profileList"></select></label>
-        <div class="profile-actions"><button id="loadProfile">Cargar</button><button id="deleteProfile">Eliminar</button></div>
-        <div id="profileStatus"></div>
-      </section>
-      <section id="lightingPanel" aria-label="Configurar iluminación">
-        <div class="lighting-title">ILUMINACIÓN DE INPUTS</div>
-        <p>Elegí el color y la fuerza del brillo de cada grupo.</p>
-        <div class="lighting-grid">
-          <fieldset>
-            <legend>BOTONES</legend>
-            <label>Color <input id="buttonLightColor" type="color" value="#59e4ff"></label>
-            <label>Intensidad <input id="buttonLightIntensity" type="range" min="0" max="100" step="1" value="100"><output id="buttonLightValue">100%</output></label>
-            <div class="light-preview button-light-preview">A</div>
-          </fieldset>
-          <fieldset>
-            <legend>D-PAD / STICK</legend>
-            <label>Color <input id="dpadLightColor" type="color" value="#59e4ff"></label>
-            <label>Intensidad <input id="dpadLightIntensity" type="range" min="0" max="100" step="1" value="65"><output id="dpadLightValue">65%</output></label>
-            <div class="light-preview dpad-light-preview">▲</div>
-          </fieldset>
-        </div>
-        <div class="trail-controls">
-          <label class="trail-toggle"><input id="trailEnabled" type="checkbox" checked> Estela de direcciones</label>
-          <label>Duración <input id="trailDuration" type="range" min="80" max="600" step="20" value="240"><output id="trailDurationValue">240 ms</output></label>
-          <label>Intensidad <input id="trailIntensity" type="range" min="0" max="100" step="1" value="55"><output id="trailIntensityValue">55%</output></label>
-        </div>
-      </section>
+      <header class="topbar drag-region">
+        <div class="brand"><span class="brand-mark">OB</span><span>INPUT OVERLAY</span></div>
+        <div id="moveHandle">⠿ ARRASTRAR PARA MOVER</div>
+        <div id="status" class="status local"><i></i><span>Inicializando…</span></div>
+      </header>
+
       <div class="controls">
         <div class="dpad" aria-label="Direcciones">
           <div class="dpad-core"></div>
@@ -62,7 +24,10 @@
           <div class="key dpad-key down" data-button="down"><span>▼</span><small>↓</small></div>
           <div class="key dpad-key left" data-button="left"><span>◀</span><small>←</small></div>
         </div>
-        <div class="analog-stick" aria-label="Stick analógico"><div class="stick-gate"><div class="stick-knob"><span>●</span></div></div><small>L STICK</small></div>
+        <div class="analog-stick" aria-label="Stick analógico">
+          <div class="stick-gate"><div class="stick-knob"><span>●</span></div></div>
+          <small>L STICK</small>
+        </div>
         <div class="system-buttons">
           <div class="system-wrap"><div class="key system-key" data-button="select"></div><small data-label="select">SELECT</small></div>
           <div class="system-wrap"><div class="key system-key" data-button="start"></div><small data-label="start">START</small></div>
@@ -74,8 +39,21 @@
           <div class="key face-key square" data-button="square"><span></span><small>Z</small></div>
         </div>
       </div>
-      <footer class="hint"><span>Ctrl+Shift+O ocultar</span><button id="moveMode">Ctrl+Shift+M · Mover</button><span id="sizeControls"><button id="sizeDown" title="Achicar (Ctrl+Shift+↓)">−</button><span>TAMAÑO</span><button id="sizeUp" title="Agrandar (Ctrl+Shift+↑)">+</button><button id="swapLayout" title="Intercambiar izquierda/derecha">⇄</button></span><button id="streamMode">Modo OBS</button><button id="profileMode">Perfiles</button><button id="lightingMode">Iluminación</button><button id="configureMode">Configurar teclas</button><button id="clickMode">Click-through: OFF</button></footer>
+
+      <footer class="hint">
+        <button id="moveMode">Ctrl+Shift+M · Mover</button>
+        <span id="sizeControls">
+          <button id="sizeDown" title="Achicar (Ctrl+Shift+↓)">−</button>
+          <span>TAMAÑO</span>
+          <button id="sizeUp" title="Agrandar (Ctrl+Shift+↑)">+</button>
+          <button id="swapLayout" title="Intercambiar izquierda/derecha">⇄</button>
+        </span>
+        <button id="streamMode">Modo OBS</button>
+        <button id="settingsMode">Configuración</button>
+        <button id="clickMode">Click-through: OFF</button>
+      </footer>
     </section>
   </main>
-  <script src="app.js"></script>
-</body></html>
+  <script src="app.js?v=1.2.0-scale-fix"></script>
+</body>
+</html>
