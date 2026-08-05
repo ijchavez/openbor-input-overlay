@@ -19,9 +19,9 @@ let pointerInteractive = false;
 let pendingSettingsTab = 'general';
 
 const skins = ['playstation', 'xbox', 'arcade'];
-const BASE_WINDOW = { width: 760, height: 330 };
-const MAX_WINDOW = { width: 950, height: 413 };
-const MIN_WINDOW = { width: 380, height: 165 };
+const BASE_WINDOW = { width: 760, height: 354 };
+const MAX_WINDOW = { width: 950, height: 443 };
+const MIN_WINDOW = { width: 380, height: 177 };
 const DEFAULT_SETTINGS_WINDOW = { width: 940, height: 680 };
 const MIN_SETTINGS_WINDOW = { width: 760, height: 560 };
 const MAPPABLE_BUTTONS = new Set([

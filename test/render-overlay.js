@@ -7,7 +7,7 @@ app.disableHardwareAcceleration();
 app.whenReady().then(async () => {
   const preview = new BrowserWindow({
     width: 760,
-    height: 330,
+    height: 354,
     show: false,
     frame: false,
     transparent: true,

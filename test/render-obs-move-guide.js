@@ -20,7 +20,7 @@ app.whenReady().then(async () => {
 
   const preview = new BrowserWindow({
     width: 950,
-    height: 413,
+    height: 443,
     show: false,
     frame: false,
     transparent: true,

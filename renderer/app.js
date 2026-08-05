@@ -109,7 +109,7 @@ function applyLighting(value) {
 
 function updateFitScale() {
   const configuredScale = Number(config?.scale) || 1;
-  const availableScale = Math.min(window.innerWidth / 760, window.innerHeight / 330);
+  const availableScale = Math.min(window.innerWidth / 760, window.innerHeight / 354);
   document.documentElement.style.setProperty('--fit-scale', Math.min(configuredScale, availableScale));
 }
 
