@@ -28,4 +28,7 @@ test('shoulder buttons support keyboard, gamepad and common highlighting', () =>
   assert.match(app, /leftShoulder:\s*4/);
   assert.match(app, /rightShoulder:\s*5/);
   assert.match(styles, /\.shoulder-key\.pressed/);
+  assert.match(styles, /\.shoulder-left \{ left:26px; justify-content:flex-start; \}/);
+  assert.match(styles, /\.shoulder-right \{ right:26px; justify-content:flex-end; \}/);
+  assert.match(styles, /\.dpad,.analog-stick,.face \{ z-index:1; \}/);
 });
