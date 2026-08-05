@@ -270,6 +270,7 @@ function applyConfig(value) {
   document.documentElement.style.setProperty('--ui-scale', config.scale);
   updateFitScale();
   document.documentElement.style.setProperty('--ui-opacity', config.opacity);
+  document.body.classList.toggle('hide-shoulders', config.showShoulders === false);
   applyLighting(config.lighting);
   document.body.classList.toggle('hide-labels', !config.showLabels);
   refreshMappingLabels();

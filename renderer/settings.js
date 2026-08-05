@@ -169,6 +169,7 @@ function applyConfig(value) {
   document.querySelector('#opacity').value = Math.round(Number(config.opacity) * 100);
   document.querySelector('#opacityValue').value = `${Math.round(Number(config.opacity) * 100)}%`;
   document.querySelector('#showLabels').checked = config.showLabels !== false;
+  document.querySelector('#showShoulders').checked = config.showShoulders !== false;
   document.querySelector('#alwaysOnTop').checked = config.alwaysOnTop !== false;
   applyLightingPreview(config.lighting);
   refreshMappingLabels();
@@ -206,6 +207,7 @@ async function saveGeneralSettings() {
     scale: Number(document.querySelector('#scale').value) / 100,
     opacity: Number(document.querySelector('#opacity').value) / 100,
     showLabels: document.querySelector('#showLabels').checked,
+    showShoulders: document.querySelector('#showShoulders').checked,
     alwaysOnTop: document.querySelector('#alwaysOnTop').checked
   });
   if (!result.ok) {
@@ -219,7 +221,7 @@ for (const button of document.querySelectorAll('.tab-button')) {
   button.addEventListener('click', () => selectTab(button.dataset.tab));
 }
 
-for (const id of ['skin', 'directionControl', 'layout', 'showLabels', 'alwaysOnTop']) {
+for (const id of ['skin', 'directionControl', 'layout', 'showLabels', 'showShoulders', 'alwaysOnTop']) {
   document.querySelector(`#${id}`).addEventListener('change', saveGeneralSettings);
 }
 

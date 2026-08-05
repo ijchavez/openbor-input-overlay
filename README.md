@@ -509,6 +509,7 @@ Ejemplo resumido:
     "trailIntensity": 0.55
   },
   "showLabels": true,
+  "showShoulders": true,
   "alwaysOnTop": true,
   "clickThrough": false,
   "streamMode": false,
@@ -549,6 +550,7 @@ Ejemplo resumido:
 | `lighting.trailDuration` | number | Duración del efecto en milisegundos, entre `80` y `600` |
 | `lighting.trailIntensity` | number | Opacidad inicial de la estela entre `0` y `1` |
 | `showLabels` | boolean | Muestra u oculta etiquetas y barra inferior |
+| `showShoulders` | boolean | Muestra u oculta los gatillos superiores L/R |
 | `alwaysOnTop` | boolean | Mantiene la ventana sobre otras ventanas |
 | `clickThrough` | boolean | Estado inicial y persistente de click-through |
 | `streamMode` | boolean | Estado persistente del modo transmisión limpio |

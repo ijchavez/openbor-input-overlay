@@ -284,6 +284,7 @@ Before overwriting settings, the application creates `config.user.json.bak` or t
     "trailIntensity": 0.55
   },
   "showLabels": true,
+  "showShoulders": true,
   "alwaysOnTop": true,
   "clickThrough": false,
   "streamMode": false,
@@ -316,6 +317,7 @@ Before overwriting settings, the application creates `config.user.json.bak` or t
 | `lighting.trailDuration` | number | Effect duration in milliseconds, from `80` to `600` |
 | `lighting.trailIntensity` | number | Initial trail opacity from `0` to `1` |
 | `showLabels` | boolean | Shows or hides labels and the bottom bar |
+| `showShoulders` | boolean | Shows or hides the upper L/R shoulder tabs |
 | `alwaysOnTop` | boolean | Keeps the window above other windows |
 | `clickThrough` | boolean | Initial and persisted click-through state |
 | `streamMode` | boolean | Persisted clean stream mode state |

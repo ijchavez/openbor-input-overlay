@@ -331,6 +331,7 @@ function applyProfile(name) {
   config.mapping = { ...(profile.mapping || config.mapping) };
   config.skin = skins.includes(profile.skin) ? profile.skin : skins[0];
   config.layout = profile.layout === 'reversed' ? 'reversed' : 'standard';
+  if (profile.showShoulders !== undefined) config.showShoulders = Boolean(profile.showShoulders);
   config.activeProfile = name;
   applyProfileSize(profile.window);
   const [width, height] = window.getSize();
@@ -474,6 +475,7 @@ ipcMain.handle('update-settings', (_event, patch) => {
   }
   if (value.opacity !== undefined) config.opacity = Math.max(0.2, Math.min(1, Number(value.opacity) || 0.96));
   if (value.showLabels !== undefined) config.showLabels = Boolean(value.showLabels);
+  if (value.showShoulders !== undefined) config.showShoulders = Boolean(value.showShoulders);
   if (value.alwaysOnTop !== undefined) {
     config.alwaysOnTop = Boolean(value.alwaysOnTop);
     if (window && !window.isDestroyed()) window.setAlwaysOnTop(config.alwaysOnTop, 'screen-saver');
@@ -532,6 +534,7 @@ ipcMain.handle('save-profile', (_event, requestedName) => {
       mapping: { ...config.mapping },
       skin: config.skin,
       layout: config.layout,
+      showShoulders: config.showShoulders !== false,
       window: { width, height }
     });
     config.activeProfile = name;

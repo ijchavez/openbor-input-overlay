@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>OpenBOR Input Overlay</title>
-  <link rel="stylesheet" href="styles.css?v=1.2.2-visible-shoulders">
-  <link rel="stylesheet" href="overlay-v12.css?v=1.2.2-visible-shoulders">
+  <link rel="stylesheet" href="styles.css?v=1.2.3-shoulder-tabs">
+  <link rel="stylesheet" href="overlay-v12.css?v=1.2.3-shoulder-tabs">
 </head>
 <body>
   <main id="overlay" class="skin-playstation">
+    <div class="key shoulder-key shoulder-left" data-button="leftShoulder"><span>L</span><small>A</small></div>
+    <div class="key shoulder-key shoulder-right" data-button="rightShoulder"><span>R</span><small>S</small></div>
     <section class="controller" aria-label="Gamepad input overlay">
       <header class="topbar drag-region">
         <div class="brand"><span class="brand-mark">OB</span><span>INPUT OVERLAY</span></div>
@@ -17,8 +19,6 @@
       </header>
 
       <div class="controls">
-        <div class="key shoulder-key shoulder-left" data-button="leftShoulder"><span>L</span><small>A</small></div>
-        <div class="key shoulder-key shoulder-right" data-button="rightShoulder"><span>R</span><small>S</small></div>
         <div class="dpad" aria-label="Direcciones">
           <div class="dpad-core"></div>
           <div class="key dpad-key up" data-button="up"><span>▲</span><small>↑</small></div>
@@ -56,6 +56,6 @@
       </footer>
     </section>
   </main>
-  <script src="app.js?v=1.2.2-visible-shoulders"></script>
+  <script src="app.js?v=1.2.3-shoulder-tabs"></script>
 </body>
 </html>

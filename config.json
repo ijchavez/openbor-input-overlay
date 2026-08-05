@@ -13,6 +13,7 @@
     "trailDuration": 240,
     "trailIntensity": 0.55
   },
+  "showShoulders": true,
   "showLabels": true,
   "alwaysOnTop": true,
   "clickThrough": false,

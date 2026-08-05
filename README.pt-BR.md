@@ -286,6 +286,7 @@ Antes de sobrescrever a configuração, o aplicativo cria `config.user.json.bak`
     "trailIntensity": 0.55
   },
   "showLabels": true,
+  "showShoulders": true,
   "alwaysOnTop": true,
   "clickThrough": false,
   "streamMode": false,
@@ -318,6 +319,7 @@ Antes de sobrescrever a configuração, o aplicativo cria `config.user.json.bak`
 | `lighting.trailDuration` | number | Duração do efeito em milissegundos, de `80` a `600` |
 | `lighting.trailIntensity` | number | Opacidade inicial da trilha de `0` a `1` |
 | `showLabels` | boolean | Mostra ou oculta rótulos e a barra inferior |
+| `showShoulders` | boolean | Mostra ou oculta os gatilhos L/R superiores |
 | `alwaysOnTop` | boolean | Mantém a janela sobre as demais |
 | `clickThrough` | boolean | Estado inicial e persistente do click-through |
 | `streamMode` | boolean | Estado persistente do modo de transmissão limpo |
