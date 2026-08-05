@@ -18,9 +18,12 @@ test('main process grows and shrinks the window with the requested scale', () =>
   assert.match(script, /resizeWindowForScale\(previousScale, nextScale\)/);
 });
 
-test('OBS move mode displays the final clean-overlay boundary', () => {
+test('OBS move mode displays a shoulder-aware final overlay boundary', () => {
   const styles = fs.readFileSync(path.join(root, 'renderer', 'overlay-v12.css'), 'utf8');
-  assert.match(styles, /\.stream-mode\.move-mode \.controller::before/);
+  assert.match(styles, /\.stream-mode\.move-mode #overlay::before/);
   assert.match(styles, /AREA FINAL EN OBS/);
-  assert.match(styles, /height: 238px/);
+  assert.match(styles, /--obs-guide-height, 228px/);
+  assert.match(styles, /\.hide-shoulders #overlay/);
+  assert.match(styles, /--obs-guide-height: 208px/);
+  assert.doesNotMatch(styles, /\.controller::before/);
 });

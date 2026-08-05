@@ -1,6 +1,6 @@
 {
   "name": "openbor-input-overlay",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Overlay de gamepad transparente para OpenBOR y OBS",
   "main": "main.js",
   "author": "openbor-input-overlay contributors",
