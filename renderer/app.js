@@ -188,7 +188,16 @@ function handleInput({ code, button, pressed }) {
   updateButton(button);
 }
 
-const GAMEPAD_BUTTONS = { cross: 0, circle: 1, square: 2, triangle: 3, select: 8, start: 9 };
+const GAMEPAD_BUTTONS = {
+  cross: 0,
+  circle: 1,
+  square: 2,
+  triangle: 3,
+  leftShoulder: 4,
+  rightShoulder: 5,
+  select: 8,
+  start: 9
+};
 const GAMEPAD_DPAD = { up: 12, down: 13, left: 14, right: 15 };
 const GAMEPAD_ACTIONS = [...Object.keys(GAMEPAD_BUTTONS), ...Object.keys(GAMEPAD_DPAD)];
 

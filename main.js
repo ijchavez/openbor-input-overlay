@@ -24,7 +24,11 @@ const MAX_WINDOW = { width: 950, height: 413 };
 const MIN_WINDOW = { width: 380, height: 165 };
 const DEFAULT_SETTINGS_WINDOW = { width: 940, height: 680 };
 const MIN_SETTINGS_WINDOW = { width: 760, height: 560 };
-const MAPPABLE_BUTTONS = new Set(['up', 'down', 'left', 'right', 'square', 'cross', 'circle', 'triangle', 'start', 'select']);
+const MAPPABLE_BUTTONS = new Set([
+  'up', 'down', 'left', 'right',
+  'square', 'cross', 'circle', 'triangle',
+  'leftShoulder', 'rightShoulder', 'start', 'select'
+]);
 const SETTINGS_TABS = new Set(['general', 'controls', 'appearance', 'profiles', 'shortcuts']);
 const DEFAULT_LIGHTING = {
   buttonColor: '#59e4ff',

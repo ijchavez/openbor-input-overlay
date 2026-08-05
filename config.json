@@ -28,6 +28,7 @@
   "mapping": {
     "ArrowUp": "up", "ArrowDown": "down", "ArrowLeft": "left", "ArrowRight": "right",
     "KeyZ": "square", "KeyX": "cross", "KeyC": "circle", "KeyV": "triangle",
+    "KeyA": "leftShoulder", "KeyS": "rightShoulder",
     "Enter": "start", "ShiftLeft": "select", "ShiftRight": "select"
   },
   "profilesDirectory": null,
