@@ -28,6 +28,7 @@ body {
 }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
+.field-hint { display:block; margin-top:3px; color:#68758b; font-size:10px; font-weight:400; }
 
 .settings-shell { display: grid; grid-template-columns: 240px minmax(0, 1fr); height: 100%; }
 .sidebar {

@@ -39,7 +39,7 @@ A transparent Windows overlay that turns the keys used in OpenBOR into a visual 
 - Transparent, always-on-top overlay.
 - Global keyboard input through `uiohook-napi`, with a local fallback.
 - Visual indicators for directions, action buttons, Start, and Select.
-- Visual analog stick or D-pad, including diagonals.
+- Visual analog stick, D-pad, or four round directional buttons, including diagonals.
 - PlayStation, Xbox, and arcade skins.
 - Mouse click-through and a move mode that restores it automatically.
 - Adjustable size from `380 × 165` to `760 × 330` pixels.
@@ -112,7 +112,7 @@ npm.cmd run build
 ## Overlay interface
 
 - **Top bar:** application name, drag area, and input status.
-- **Direction control:** visual stick or D-pad, selected with `directionControl`.
+- **Direction control:** visual stick, D-pad, or four round directional buttons, selected with `directionControl`.
 - **Center buttons:** Select and Start.
 - **Action buttons:** triangle, circle, cross, and square; Xbox and arcade skins use different symbols.
 - **Bottom bar:** move mode, size, OBS mode, profiles, lighting, key configuration, and click-through.
@@ -305,7 +305,7 @@ Before overwriting settings, the application creates `config.user.json.bak` or t
 | Property | Type | Description |
 |---|---|---|
 | `skin` | string | `playstation`, `xbox`, or `arcade` |
-| `directionControl` | string | `stick` or `dpad` |
+| `directionControl` | string | `stick`, `dpad`, or `buttons` |
 | `layout` | string | `standard` or `reversed` |
 | `scale` | number | Additional visual content scale |
 | `opacity` | number | Overlay opacity, normally `0` to `1` |

@@ -425,7 +425,7 @@ app.whenReady().then(async () => {
   config = loadConfig(app);
   config.lighting = normalizeLighting(config.lighting);
   config.layout = config.layout === 'reversed' ? 'reversed' : 'standard';
-  config.directionControl = config.directionControl === 'dpad' ? 'dpad' : 'stick';
+  config.directionControl = ['stick', 'dpad', 'buttons'].includes(config.directionControl) ? config.directionControl : 'stick';
   config.hotkeys = normalizedHotkeys(config.hotkeys);
   profileStore = new ProfileStore(config.profilesDirectory || defaultProfilesDirectory());
   profileStore.migrate(config.profiles);
@@ -465,7 +465,7 @@ ipcMain.handle('get-settings', () => ({
 ipcMain.handle('update-settings', (_event, patch) => {
   const value = patch && typeof patch === 'object' ? patch : {};
   if (skins.includes(value.skin)) config.skin = value.skin;
-  if (['stick', 'dpad'].includes(value.directionControl)) config.directionControl = value.directionControl;
+  if (['stick', 'dpad', 'buttons'].includes(value.directionControl)) config.directionControl = value.directionControl;
   if (['standard', 'reversed'].includes(value.layout)) config.layout = value.layout;
   if (value.scale !== undefined) {
     const previousScale = Math.max(0.65, Math.min(1.25, Number(config.scale) || 1));

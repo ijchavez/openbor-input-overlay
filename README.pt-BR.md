@@ -39,7 +39,7 @@ Overlay transparente para Windows que transforma as teclas usadas no OpenBOR em 
 - Overlay transparente e sempre visível sobre outras janelas.
 - Entrada global do teclado por meio do `uiohook-napi`, com fallback local.
 - Indicadores visuais para direções, botões de ação, Start e Select.
-- Direção por stick analógico visual ou D-pad, incluindo diagonais.
+- Direção por stick analógico, D-pad ou quatro botões direcionais redondos, incluindo diagonais.
 - Skins PlayStation, Xbox e arcade.
 - Click-through para o mouse atravessar o overlay.
 - Modo de movimentação com restauração automática do click-through.
@@ -114,7 +114,7 @@ npm.cmd run build
 ## Interface do overlay
 
 - **Barra superior:** nome do aplicativo, área para arrastar e indicador de entrada.
-- **Controle de direção:** stick visual ou D-pad, conforme `directionControl`.
+- **Controle de direção:** stick visual, D-pad ou quatro botões direcionais redondos, conforme `directionControl`.
 - **Botões centrais:** Select e Start.
 - **Botões de ação:** triângulo, círculo, cruz e quadrado; as skins Xbox e arcade usam outros símbolos.
 - **Barra inferior:** movimentação, tamanho, modo OBS, perfis, iluminação, configuração de teclas e click-through.
@@ -307,7 +307,7 @@ Antes de sobrescrever a configuração, o aplicativo cria `config.user.json.bak`
 | Propriedade | Tipo | Descrição |
 |---|---|---|
 | `skin` | string | `playstation`, `xbox` ou `arcade` |
-| `directionControl` | string | `stick` ou `dpad` |
+| `directionControl` | string | `stick`, `dpad` ou `buttons` |
 | `layout` | string | `standard` ou `reversed` |
 | `scale` | number | Escala adicional do conteúdo visual |
 | `opacity` | number | Opacidade, normalmente de `0` a `1` |
