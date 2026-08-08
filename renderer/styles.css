@@ -29,6 +29,14 @@ body { position: relative; }
 .dpad-key { display:grid;place-items:center;color:#7f8aa0;transition:transform 70ms ease,background 100ms,color 100ms,box-shadow 100ms; }
 .dpad-key span { font-size:16px;text-shadow:0 2px 2px #000; }.dpad-key small { position:absolute;font-size:9px;color:#505a6c; }
 .dpad-key.up { left:54px;top:0;border-radius:12px 12px 0 0 }.dpad-key.right { right:0;top:54px;border-radius:0 12px 12px 0 }.dpad-key.down { left:54px;bottom:0;border-radius:0 0 12px 12px }.dpad-key.left { left:0;top:54px;border-radius:12px 0 0 12px }.dpad-core { left:54px;top:54px;border:none;z-index:0 }.dpad-key.up small{top:7px}.dpad-key.down small{bottom:7px}.dpad-key.left small{left:8px}.dpad-key.right small{right:8px}
+.use-direction-buttons .dpad { width:184px;height:174px;filter:drop-shadow(0 9px 12px rgba(0,0,0,.4)); }
+.use-direction-buttons .dpad-core { display:none; }
+.use-direction-buttons .dpad-key { width:64px;height:64px;border:2px solid #525d70;border-radius:50%;background:radial-gradient(circle at 36% 27%,#3e4657,#171c27 65%);box-shadow:inset 0 2px 3px rgba(255,255,255,.12),0 7px 11px rgba(0,0,0,.5); }
+.use-direction-buttons .dpad-key.up { left:60px;top:0; }
+.use-direction-buttons .dpad-key.right { right:0;top:55px; }
+.use-direction-buttons .dpad-key.down { left:60px;bottom:0; }
+.use-direction-buttons .dpad-key.left { left:0;top:55px; }
+.use-direction-buttons .dpad-key small { right:7px;bottom:5px;top:auto;left:auto; }
 .system-buttons { display:flex;justify-content:center;gap:24px;align-items:center;padding-top:42px; }.system-wrap { text-align:center;color:var(--muted);font-size:9px;letter-spacing:1px; }.system-key { width:42px;height:16px;margin-bottom:8px;border-radius:10px;background:linear-gradient(#3c4555,#171c25);border:1px solid #4d586b;box-shadow:0 4px 8px #080b10;transition:all 80ms; }
 .face { width:184px;height:174px;position:relative;margin:auto; }.face-key { position:absolute;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 36% 27%,#3e4657,#171c27 65%);border:2px solid #525d70;box-shadow:inset 0 2px 3px rgba(255,255,255,.12),0 7px 11px rgba(0,0,0,.5);transition:transform 70ms ease,box-shadow 100ms,filter 100ms; }
 .face-key span { font:600 29px/1 "Segoe UI Symbol","Segoe UI",sans-serif; }.face-key small { position:absolute;right:-12px;bottom:1px;color:#667188;font-size:9px; }.triangle{left:60px;top:0;color:#58d89b}.circle{right:0;top:55px;color:#ff667e}.cross{left:60px;bottom:0;color:#65a9ff}.square{left:0;top:55px;color:#e77bdb}

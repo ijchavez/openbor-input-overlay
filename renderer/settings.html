@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Configuración - OpenBOR Input Overlay</title>
-  <link rel="stylesheet" href="settings.css?v=1.2.0-trail-layout-fix">
+  <link rel="stylesheet" href="settings.css?v=1.2.5-round-directions">
 </head>
 <body>
   <div class="settings-shell">
@@ -50,10 +50,11 @@
                 <option value="arcade">Arcade</option>
               </select>
             </label>
-            <label>Direcciones
+            <label>Direcciones <small class="field-hint">Grupo izquierdo &middot; movimiento</small>
               <select id="directionControl">
                 <option value="stick">Stick analógico</option>
                 <option value="dpad">D-pad</option>
+                <option value="buttons">4 botones redondos (flechas)</option>
               </select>
             </label>
             <label>Distribución
@@ -111,12 +112,12 @@
         </div>
         <div class="card-grid two-columns">
           <article class="settings-card light-card">
-            <div class="card-heading"><div><h3>Botones</h3><p>Acciones y botones de sistema</p></div><div class="light-preview button-preview">A</div></div>
+            <div class="card-heading"><div><h3>Botones de acci&oacute;n</h3><p>Grupo derecho y botones de sistema</p></div><div class="light-preview button-preview">A</div></div>
             <label class="color-row">Color <input id="buttonLightColor" type="color"></label>
             <label class="range-row">Intensidad <input id="buttonLightIntensity" type="range" min="0" max="100" step="1"><output id="buttonLightValue"></output></label>
           </article>
           <article class="settings-card light-card">
-            <div class="card-heading"><div><h3>D-pad / Stick</h3><p>Direcciones y movimiento</p></div><div class="light-preview dpad-preview">▲</div></div>
+            <div class="card-heading"><div><h3>Direcciones</h3><p>Grupo izquierdo: D-pad, stick o 4 botones</p></div><div class="light-preview dpad-preview">▲</div></div>
             <label class="color-row">Color <input id="dpadLightColor" type="color"></label>
             <label class="range-row">Intensidad <input id="dpadLightIntensity" type="range" min="0" max="100" step="1"><output id="dpadLightValue"></output></label>
           </article>
@@ -179,6 +180,6 @@
       </section>
     </main>
   </div>
-  <script src="settings.js?v=1.2.0-trail-pointer-fix"></script>
+  <script src="settings.js?v=1.2.5-round-directions"></script>
 </body>
 </html>

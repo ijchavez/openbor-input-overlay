@@ -267,6 +267,11 @@ function applyConfig(value) {
   setSkin(config.skin);
   setLayout(config.layout);
   document.body.classList.toggle('use-stick', config.directionControl === 'stick');
+  document.body.classList.toggle('use-direction-buttons', config.directionControl === 'buttons');
+  document.querySelector('.dpad')?.setAttribute(
+    'aria-label',
+    config.directionControl === 'buttons' ? 'Cuatro botones direccionales' : 'D-pad'
+  );
   document.documentElement.style.setProperty('--ui-scale', config.scale);
   updateFitScale();
   document.documentElement.style.setProperty('--ui-opacity', config.opacity);
