@@ -389,6 +389,16 @@ document.querySelector('#saveHotkeys').addEventListener('click', async () => {
 
 document.querySelector('#toggleObs').addEventListener('click', () => window.overlay.toggleStreamMode());
 
+const signatureCta = document.querySelector('#signatureCta');
+const signatureLandingUrl = new URLSearchParams(window.location.search).get('signatureUrl');
+if (signatureLandingUrl) {
+  signatureCta.href = signatureLandingUrl;
+  signatureCta.target = '_blank';
+  signatureCta.rel = 'noopener noreferrer';
+  signatureCta.removeAttribute('aria-disabled');
+  signatureCta.removeAttribute('title');
+}
+
 window.overlay.onConfig(applyConfig);
 window.overlay.onOverlayState(applyOverlayState);
 window.overlay.onSettingsTab(selectTab);

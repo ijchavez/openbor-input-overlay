@@ -1,9 +1,13 @@
 const path = require('node:path');
-const { app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu, dialog, screen } = require('electron');
+const { pathToFileURL } = require('node:url');
+const { app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu, dialog, screen, shell } = require('electron');
 const { loadConfig, saveConfig, saveMapping } = require('./src/config');
 const { InputManager } = require('./src/input-manager');
 const { ProfileStore } = require('./src/profile-store');
 const { OverlayStateController } = require('./src/overlay-state');
+const { SIGNATURE_LANDING_URL, createSignatureOpener } = require('./src/signature-discovery');
+
+const openSignatureLanding = createSignatureOpener((url) => shell.openExternal(url));
 
 let window;
 let settingsWindow;
@@ -186,6 +190,8 @@ function visibleSettingsBounds() {
 }
 
 function createSettingsWindow() {
+  const settingsUrl = pathToFileURL(path.join(__dirname, 'renderer', 'settings.html'));
+  if (SIGNATURE_LANDING_URL) settingsUrl.searchParams.set('signatureUrl', SIGNATURE_LANDING_URL);
   settingsWindow = new BrowserWindow({
     ...visibleSettingsBounds(),
     minWidth: MIN_SETTINGS_WINDOW.width,
@@ -200,7 +206,14 @@ function createSettingsWindow() {
       nodeIntegration: false
     }
   });
-  settingsWindow.loadFile(path.join(__dirname, 'renderer', 'settings.html'));
+  settingsWindow.webContents.setWindowOpenHandler(({ url }) => {
+    void openSignatureLanding(url);
+    return { action: 'deny' };
+  });
+  settingsWindow.webContents.on('will-navigate', (event, url) => {
+    if (url !== settingsUrl.href) event.preventDefault();
+  });
+  settingsWindow.loadURL(settingsUrl.href);
   settingsWindow.webContents.once('did-finish-load', () => {
     sendSettings('config', config);
     sendSettings('overlay-state', overlayState.snapshot());
@@ -407,6 +420,12 @@ function updateTrayMenu() {
     { label: 'Perfiles', submenu: profileItems },
     { label: 'Administrar perfiles', click: () => openSettings('profiles') },
     { label: 'Atajos y OBS', click: () => openSettings('shortcuts') },
+    { type: 'separator' },
+    {
+      label: 'Conocer Inpulsar Signature…',
+      enabled: Boolean(SIGNATURE_LANDING_URL),
+      click: openSignatureLanding
+    },
     { type: 'separator' },
     { label: 'Salir', click: () => app.quit() }
   ]));
