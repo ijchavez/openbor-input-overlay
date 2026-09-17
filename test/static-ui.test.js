@@ -29,3 +29,17 @@ test('settings window contains the five planned sections', () => {
     assert.match(html, new RegExp(`data-panel="${tab}"`));
   }
 });
+
+test('Signature discovery exists only at the end of General settings', () => {
+  const settings = fs.readFileSync(path.join(root, 'renderer/settings.html'), 'utf8');
+  const overlay = [
+    fs.readFileSync(path.join(root, 'renderer/index.html'), 'utf8'),
+    fs.readFileSync(path.join(root, 'renderer/app.js'), 'utf8')
+  ].join('\n');
+
+  assert.match(settings, /data-panel="general"[\s\S]*class="settings-card signature-discovery-card"/);
+  assert.match(settings, /Discover Inpulsar Signature/);
+  assert.match(settings, /Discover Signature ↗/);
+  assert.match(settings, /assets\/signature\/inpulsar-signature-preview\.png/);
+  assert.doesNotMatch(overlay, /Inpulsar Signature|Discover Signature|signature-preview/i);
+});
