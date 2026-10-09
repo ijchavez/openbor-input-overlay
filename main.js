@@ -6,11 +6,13 @@ const { InputManager } = require('./src/input-manager');
 const { ProfileStore } = require('./src/profile-store');
 const { OverlayStateController } = require('./src/overlay-state');
 const { SIGNATURE_LANDING_URL, createSignatureOpener } = require('./src/signature-discovery');
+const { isAllowedAboutUrl } = require('./src/about');
 
 const openSignatureLanding = createSignatureOpener((url) => shell.openExternal(url));
 
 let window;
 let settingsWindow;
+let aboutWindow;
 let input;
 let config;
 let profileStore;
@@ -421,14 +423,61 @@ function updateTrayMenu() {
     { label: 'Administrar perfiles', click: () => openSettings('profiles') },
     { label: 'Atajos y OBS', click: () => openSettings('shortcuts') },
     { type: 'separator' },
-    {
-      label: 'Conocer Inpulsar Signature…',
-      enabled: Boolean(SIGNATURE_LANDING_URL),
-      click: openSignatureLanding
-    },
+    { label: 'Acerca de OpenBOR Input Overlay…', click: showAbout },
     { type: 'separator' },
     { label: 'Salir', click: () => app.quit() }
   ]));
+}
+
+function showAbout() {
+  if (aboutWindow && !aboutWindow.isDestroyed()) {
+    if (aboutWindow.isMinimized()) aboutWindow.restore();
+    aboutWindow.show();
+    aboutWindow.focus();
+    return;
+  }
+
+  const area = screen.getPrimaryDisplay().workAreaSize;
+  const aboutPath = path.join(__dirname, 'renderer', 'about.html');
+  const aboutUrl = pathToFileURL(aboutPath);
+  aboutUrl.searchParams.set('version', app.getVersion());
+  const about = new BrowserWindow({
+    width: Math.max(360, Math.min(780, area.width - 40)),
+    height: Math.max(400, Math.min(620, area.height - 40)),
+    minWidth: 360,
+    minHeight: 400,
+    title: 'Acerca de OpenBOR Input Overlay',
+    backgroundColor: '#0A0D14',
+    show: false,
+    autoHideMenuBar: true,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true
+    }
+  });
+  aboutWindow = about;
+  about.webContents.setWindowOpenHandler(({ url }) => {
+    if (isAllowedAboutUrl(url)) {
+      void shell.openExternal(url).catch((error) => {
+        console.error('No se pudo abrir el enlace de About:', error);
+      });
+    }
+    return { action: 'deny' };
+  });
+  about.webContents.on('will-navigate', (event, url) => {
+    if (url !== aboutUrl.href) event.preventDefault();
+  });
+  about.once('ready-to-show', () => {
+    if (!about.isDestroyed()) about.show();
+  });
+  about.on('closed', () => {
+    if (aboutWindow === about) aboutWindow = null;
+  });
+  void about.loadURL(aboutUrl.href).catch((error) => {
+    console.error('No se pudo cargar About:', error);
+    if (!about.isDestroyed()) about.close();
+  });
 }
 
 async function createTray() {

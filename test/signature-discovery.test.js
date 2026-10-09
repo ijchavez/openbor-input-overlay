@@ -55,13 +55,13 @@ test('official public URL enables the shared Signature opener', async () => {
   assert.deepEqual(opened, ['https://inpulsar.vercel.app/']);
 });
 
-test('main process denies new windows and reuses the guarded helper in the tray', () => {
+test('main process denies new windows and keeps the guarded Signature helper in settings', () => {
   const main = fs.readFileSync(path.join(root, 'main.js'), 'utf8');
   assert.match(main, /setWindowOpenHandler\(\(\{ url \}\) => \{/);
   assert.match(main, /openSignatureLanding\(url\)/);
   assert.match(main, /return \{ action: 'deny' \}/);
   assert.match(main, /webContents\.on\('will-navigate'/);
-  assert.match(main, /label: 'Conocer Inpulsar Signature…'[\s\S]*click: openSignatureLanding/);
+  assert.doesNotMatch(main, /label: 'Conocer Inpulsar Signature…'/);
 });
 
 test('Signature discovery adds no promotional persistence or preload API', () => {
