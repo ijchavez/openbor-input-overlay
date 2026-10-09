@@ -1,0 +1,2 @@
+# Preserve upstream source and patch verbatim, including original whitespace.
+legal/native-source/** -whitespace

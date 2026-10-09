@@ -13,6 +13,7 @@ const translations = {
     publisher: 'por Neon Pulsar Labs',
     description: 'OpenBOR Input Overlay es un proyecto de código abierto independiente para visualizar entradas de control en OpenBOR. Forma parte del ecosistema publicado por Neon Pulsar Labs y mantiene una línea propia, separada de Inpulsar Community y Signature.',
     navigationLabel: 'Enlaces del proyecto',
+    nativeNotice: 'libuiohook © 2006–2023 Alexander Barker y colaboradores · LGPL-3.0-or-later · GPLv3 y LGPLv3: resources/legal/licenses/',
     close: 'Cerrar'
   },
   en: {
@@ -24,6 +25,7 @@ const translations = {
     publisher: 'by Neon Pulsar Labs',
     description: 'OpenBOR Input Overlay is an independent open source project for displaying control inputs in OpenBOR. It is part of the ecosystem published by Neon Pulsar Labs and follows its own path, separate from Inpulsar Community and Inpulsar Signature.',
     navigationLabel: 'Project links',
+    nativeNotice: 'libuiohook © 2006–2023 Alexander Barker and contributors · LGPL-3.0-or-later · GPLv3 and LGPLv3: resources/legal/licenses/',
     close: 'Close'
   },
   'pt-BR': {
@@ -35,6 +37,7 @@ const translations = {
     publisher: 'por Neon Pulsar Labs',
     description: 'OpenBOR Input Overlay é um projeto independente de código aberto para visualizar entradas de controle no OpenBOR. Faz parte do ecossistema publicado por Neon Pulsar Labs e segue um caminho próprio, separado de Inpulsar Community e Inpulsar Signature.',
     navigationLabel: 'Links do projeto',
+    nativeNotice: 'libuiohook © 2006–2023 Alexander Barker e colaboradores · LGPL-3.0-or-later · GPLv3 e LGPLv3: resources/legal/licenses/',
     close: 'Fechar'
   }
 };
