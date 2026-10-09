@@ -1,6 +1,6 @@
 # OpenBOR Input Overlay — Roadmap
 
-OpenBOR Input Overlay es un proyecto público independiente de Inpulsar Community Edition y de Inpulsar Signature. Su release estable conocida es v1.2.5. El código está públicamente disponible, pero la adopción de una licencia open source explícita y válida aún requiere auditoría y decisión. Hasta entonces, la disponibilidad del código no debe presentarse como permiso ya concedido para modificarlo o redistribuirlo.
+OpenBOR Input Overlay es un proyecto público independiente de Inpulsar Community Edition y de Inpulsar Signature. Su release estable conocida es v1.2.5. El código original se publica bajo MIT; `LICENSE` y `RIGHTS.md` delimitan los permisos sobre código, assets y marcas. Las licencias de terceros siguen vigentes y el cumplimiento de los ejecutables existentes con las obligaciones de `libuiohook` aún requiere verificación.
 
 ## Dirección de mantenimiento
 
@@ -10,19 +10,19 @@ OpenBOR Input Overlay es un proyecto público independiente de Inpulsar Communit
 - Mantener esta línea independiente. Las capacidades nuevas de Community o Signature no se incorporan automáticamente ni se prometen como portables.
 - Evitar downports automáticos y una segunda implementación activa del producto INPULSAR.
 
-## E3 — Open source y mantenimiento — PLANNED
+## E3 — Open source y mantenimiento — IN PROGRESS
 
 1. Auditar avisos de licencia existentes, derechos de autores y contribuyentes, y obligaciones de dependencias.
 2. Separar la futura licencia del código de las licencias y permisos de logos, fuentes, imágenes, skins y demás assets.
-3. Elegir y añadir una licencia explícita válida sólo tras esa auditoría y una decisión expresa. La meta es permitir estudiar, modificar y redistribuir el código conforme a sus términos.
+3. Aplicar la decisión expresa de licencia MIT al código original y documentar por separado los permisos de assets y marcas. La meta es permitir estudiar, modificar y redistribuir el código conforme a sus términos.
 4. Actualizar `README.md`, `README.en.md` y `README.pt-BR.md` para explicar con precisión licencia, contribuciones y alcance del mantenimiento.
 5. Definir reglas de contribución, revisión y aceptación de correcciones, sin comprometer nuevas features ni plazos.
 
-Este bloque es un plan. No declara completada la auditoría, elegida la licencia ni publicada una nueva release.
+Este bloque mantiene tareas de mantenimiento pendientes. No declara verificado el cumplimiento de los ejecutables existentes ni publicada una nueva release.
 
 ## Relación con el ecosistema
 
-`ijchavez/openbor-input-overlay-private` es la fuente privada compartida de Inpulsar Community Edition (freeware, desarrollo activo) e Inpulsar Signature (premium, roadmap Early Access). `ijchavez/inpulsar` presenta esas ediciones y debe identificar las descargas históricas de OpenBOR Input Overlay v1.2.5 hasta disponer de una release Community real. Neon Pulsar Labs actúa como publisher institucional.
+`ijchavez/openbor-input-overlay-private` es la fuente privada compartida de Inpulsar Community Edition (freeware, desarrollo activo) e Inpulsar Signature (premium, roadmap Early Access). `ijchavez/inpulsar` presenta esas ediciones y debe identificar las descargas históricas de OpenBOR Input Overlay v1.2.5 hasta disponer de una release Community real. Neon Pulsar Labs es el nombre de fantasía y publisher utilizado por Gerardo Chavez; no es una persona jurídica independiente.
 
 Cada repositorio mantiene su propio roadmap, branch, revisión y release. Este roadmap no traslada al proyecto público el backlog técnico ni los compromisos de distribución de las ediciones privadas.
 
