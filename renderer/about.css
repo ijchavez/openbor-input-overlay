@@ -6,7 +6,11 @@ body { color: #f2f5ff; background: #0A0D14; }
 .about-shell::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: linear-gradient(90deg, #19caff, #7963d9 52%, transparent); opacity: .7; }
 .topline { display: flex; align-items: center; gap: 18px; color: #7e92ad; }
 .eyebrow { white-space: nowrap; font-size: 10px; font-weight: 700; letter-spacing: .2em; }
-.accent-rule { width: 72px; height: 1px; background: linear-gradient(90deg, #4daeff, transparent); }
+.accent-rule { flex: 1; max-width: 72px; min-width: 12px; height: 1px; background: linear-gradient(90deg, #4daeff, transparent); }
+.language-switcher { display: flex; gap: 4px; margin-left: auto; white-space: nowrap; }
+.language-switcher button { min-width: 0; padding: 5px 7px; border-color: transparent; background: transparent; color: #9eacc4; font-size: 10px; letter-spacing: .02em; }
+.language-switcher button:hover { background: #182130; }
+.language-switcher button[aria-pressed="true"] { border-color: #53bdf3; background: #182b3b; color: #e6f7ff; }
 .identity { width: 100%; max-width: 660px; margin: 0 auto; }
 .publisher-logo { display: block; width: min(100%, 560px); height: auto; margin: 0 auto 22px; object-fit: contain; }
 .project-copy { max-width: 610px; }
@@ -26,5 +30,5 @@ nav a:focus-visible, button:focus-visible { outline: 2px solid #6ad1ff; outline-
 button { min-width: 77px; padding: 8px 15px; border: 1px solid #53637f; border-radius: 6px; background: #182130; color: #e6f1ff; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
 button:hover { background: #26334a; }
 @media (max-height: 540px) { .about-shell { padding-top: 20px; padding-bottom: 18px; } .publisher-logo { width: min(100%, 440px); margin-bottom: 8px; } .publisher { margin-top: 8px; } .description { margin-top: 9px; line-height: 1.45; } nav { padding: 8px 0; } .bottomline { padding-top: 8px; } }
-@media (max-height: 460px) { .about-shell { padding-top: 12px; padding-bottom: 10px; } .eyebrow { font-size: 9px; } .publisher-logo { width: min(100%, 310px); margin-bottom: 4px; } h1 { margin-bottom: 5px; font-size: 24px; } .meta { gap: 6px; font-size: 11px; } .publisher { margin-top: 5px; font-size: 11px; } .description { margin-top: 7px; font-size: 11px; line-height: 1.35; } nav { gap: 10px 16px; padding: 6px 0; } nav a { font-size: 11px; } .bottomline { padding-top: 6px; } button { padding: 5px 12px; } }
+@media (max-height: 460px) { .about-shell { padding-top: 12px; padding-bottom: 10px; } .eyebrow { font-size: 9px; } .publisher-logo { width: min(100%, 310px); margin-bottom: 4px; } h1 { margin-bottom: 5px; font-size: 24px; } .meta { gap: 6px; font-size: 11px; } .publisher { margin-top: 5px; font-size: 11px; } .description { margin-top: 7px; font-size: 11px; line-height: 1.35; } nav { gap: 10px 16px; padding: 6px 0; } nav a { font-size: 11px; } .bottomline { padding-top: 6px; } button { padding: 5px 12px; } .language-switcher button { padding: 4px 6px; } }
 @media (max-width: 540px) { .about-shell { padding-inline: 24px; } .publisher-logo { margin-bottom: 14px; } nav { gap: 10px 18px; } }
