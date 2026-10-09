@@ -1,24 +1,22 @@
 # OpenBOR Input Overlay — Roadmap
 
-OpenBOR Input Overlay es un proyecto público independiente de Inpulsar Community Edition y de Inpulsar Signature. Su release estable conocida es v1.2.5. El código original se publica bajo MIT; `LICENSE` y `RIGHTS.md` delimitan los permisos sobre código, assets y marcas. Las licencias de terceros siguen vigentes y el cumplimiento de los ejecutables existentes con las obligaciones de `libuiohook` aún requiere verificación.
+OpenBOR Input Overlay es un proyecto público independiente de Inpulsar Community Edition y de Inpulsar Signature. Su release pública histórica conocida sigue siendo v1.2.5. El código original se publica bajo MIT; `LICENSE` y `RIGHTS.md` delimitan los permisos sobre código, assets y marcas. Las licencias de terceros siguen vigentes. La verificación posterior de empaquetados de prueba no establece la conformidad de los ejecutables históricos publicados.
 
-## Dirección de mantenimiento
+## Estado posterior a E3 — Limited Corrective Maintenance
 
 - Conservar las releases históricas y sus referencias.
-- Considerar mantenimiento correctivo limitado para defectos justificados, seguridad o compatibilidad, según capacidad y prioridad.
-- Evaluar una release de corrección, eventualmente v1.2.6, sólo si existe una razón concreta y se valida su contenido. No se establece cadencia de releases.
-- Mantener esta línea independiente. Las capacidades nuevas de Community o Signature no se incorporan automáticamente ni se prometen como portables.
-- Evitar downports automáticos y una segunda implementación activa del producto INPULSAR.
+- Evaluar únicamente defectos justificados, problemas de seguridad y compatibilidad, según disponibilidad y prioridad.
+- No hay compromiso de nuevas funcionalidades, soporte permanente, SLA, fechas de revisión, v1.2.6 ni otras releases o calendario de publicaciones.
+- Mantener esta línea independiente de Inpulsar Community Edition e Inpulsar Signature, sin comprometer downports de sus capacidades.
 
-## E3 — Open source y mantenimiento — IN PROGRESS
+## E3 — Open source y mantenimiento — COMPLETE
 
-1. Auditar avisos de licencia existentes, derechos de autores y contribuyentes, y obligaciones de dependencias.
-2. Separar la futura licencia del código de las licencias y permisos de logos, fuentes, imágenes, skins y demás assets.
-3. Aplicar la decisión expresa de licencia MIT al código original y documentar por separado los permisos de assets y marcas. La meta es permitir estudiar, modificar y redistribuir el código conforme a sus términos.
-4. Actualizar `README.md`, `README.en.md` y `README.pt-BR.md` para explicar con precisión licencia, contribuciones y alcance del mantenimiento.
-5. Definir reglas de contribución, revisión y aceptación de correcciones, sin comprometer nuevas features ni plazos.
+1. El código y la documentación originales se publicaron bajo [MIT](LICENSE), con copyright de Gerardo Chavez. Neon Pulsar Labs figura como nombre de publicación, no como titular separado; [RIGHTS.md](RIGHTS.md) distingue los permisos específicos de gráficos y marcas, junto con el [aviso del logo](renderer/assets/brand/NOTICE.md).
+2. Se reunieron los [avisos y materiales de terceros](legal/THIRD-PARTY-NOTICES.md), las [fuentes nativas](legal/native-source/) y el [procedimiento de reconstrucción y reenlace LGPL](legal/RELINKING.md). El [registro de verificación](legal/VERIFICATION.md) documenta el reenlace demostrado de una copia modificada de `libuiohook` y la generación y verificación de un portable y un installer de prueba con sus materiales legales.
+3. El [About](renderer/about.html) incorporó la identidad NPL y el selector ES / EN / PT-BR. Los README en [español](README.md), [inglés](README.en.md) y [portugués de Brasil](README.pt-BR.md) quedaron alineados con las licencias y el mantenimiento limitado.
+4. Se establecieron las políticas de [contribución](CONTRIBUTING.md), [reporte de seguridad](SECURITY.md) y [soporte](SUPPORT.md), sin prometer aceptación de propuestas ni plazos.
 
-Este bloque mantiene tareas de mantenimiento pendientes. No declara verificado el cumplimiento de los ejecutables existentes ni publicada una nueva release.
+E3.1d validó empaquetados de prueba posteriores; los ejecutables históricos v1.2.5 ya publicados no fueron sustituidos ni corregidos retroactivamente. No se publicó una nueva release como parte de E3. Esa validación no demuestra por sí sola la conformidad de la distribución histórica; el [registro de verificación](legal/VERIFICATION.md) delimita su alcance.
 
 ## Relación con el ecosistema
 
