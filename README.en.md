@@ -32,6 +32,7 @@ A transparent Windows overlay that turns the keys used in OpenBOR into a visual 
 - [Current limitations](#current-limitations)
 - [Project architecture](#project-architecture)
 - [Renderer security](#renderer-security)
+- [Project, licenses, and maintenance](#project-licenses-and-maintenance)
 - [Development and Git](#development-and-git)
 
 ## Features
@@ -67,7 +68,7 @@ A transparent Windows overlay that turns the keys used in OpenBOR into a visual 
 Open PowerShell in the project folder:
 
 ```powershell
-cd D:\OneDrive\Documents\openbor-input-overlay
+cd D:\OneDrive\Documents\inpulsar-workspace\openbor-input-overlay
 npm.cmd install
 ```
 
@@ -367,7 +368,7 @@ npm.cmd run build:installer
 npm.cmd run build
 ```
 
-Artifacts are written to `dist/` with names similar to `OpenBOR Input Overlay-Portable-1.0.0-x64.exe` and `OpenBOR Input Overlay-Setup-1.0.0-x64.exe`.
+Artifacts are written to `dist/` with names similar to `OpenBOR Input Overlay-Portable-1.2.5-x64.exe` and `OpenBOR Input Overlay-Setup-1.2.5-x64.exe`.
 
 The build uses app ID `com.openbor.inputoverlay`, Windows x64, and `portable` plus `nsis` targets. `uiohook-napi` remains outside ASAR so its native binary can load, and `npmRebuild` is currently disabled. Test both artifacts on a clean machine before distribution. Because the executables are not digitally signed, Windows SmartScreen may warn when they are downloaded or run.
 
@@ -464,6 +465,20 @@ openbor-input-overlay/
 ## Renderer security
 
 The window uses `contextIsolation: true`, `nodeIntegration: false`, and a limited preload through `contextBridge`. The renderer does not directly access the filesystem or Node.js modules; sensitive operations run in the main process through explicitly defined IPC channels.
+
+## Project, licenses, and maintenance
+
+OpenBOR Input Overlay is an independent public project. Neon Pulsar Labs is the publishing name used by Gerardo Chavez, the original copyright holder; it is not a separate legal entity or copyright holder. The original code and documentation are released under the [MIT license](LICENSE).
+
+Rights to graphics and marks are described in [RIGHTS.md](RIGHTS.md). It grants specific permission for `docs/og.png` and `renderer/assets/signature/inpulsar-signature-preview.png`, and distinguishes marks from MIT-licensed material. The Neon Pulsar Labs logo has its own permission, limited to unmodified redistribution in the context stated in the [asset notice](renderer/assets/brand/NOTICE.md). The MIT license does not grant rights to the marks.
+
+Third-party dependencies retain their own licenses. See the [third-party notices](legal/THIRD-PARTY-NOTICES.md) and license texts in [`legal/licenses/`](legal/licenses/). Corresponding source and materials for rebuilding and relinking `libuiohook` are in [`legal/native-source/`](legal/native-source/) and the [relinking instructions](legal/RELINKING.md). Electron and Chromium include their license notices in application packages.
+
+E3.1d prepared and verified these materials for potential future packages of version 1.2.5. A modified copy of `libuiohook` was rebuilt and relinked on Windows x64, and isolated portable and installer builds were checked for the expected notices, licenses, sources, and binaries. The [verification record](legal/VERIFICATION.md) describes the scope and limits. The already published v1.2.5 executables were not replaced or corrected with these materials.
+
+Maintenance of this repository is limited to evaluating justified fixes for defects, security, or compatibility according to capacity and priority; there is no release schedule or commitment to new features. To propose a problem, open an [issue](https://github.com/ijchavez/openbor-input-overlay/issues) with reproduction steps, version, and environment. To propose a change, discuss its scope in an issue first and send a focused [pull request](https://github.com/ijchavez/openbor-input-overlay/pulls) with an explanation and relevant tests. This does not yet establish a formal contribution policy or guarantee that proposals will be accepted.
+
+Inpulsar Community Edition and Inpulsar Signature are separate product lines with their own repository, roadmap, and distribution terms. They are not automatically MIT distributions derived from this repository; their features and plans do not imply changes to OpenBOR Input Overlay.
 
 ## Development and Git
 

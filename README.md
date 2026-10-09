@@ -48,6 +48,7 @@ Overlay transparente para Windows que convierte las teclas usadas en OpenBOR en 
 - [Limitaciones actuales](#limitaciones-actuales)
 - [Arquitectura del proyecto](#arquitectura-del-proyecto)
 - [Seguridad del renderer](#seguridad-del-renderer)
+- [Proyecto, licencias y mantenimiento](#proyecto-licencias-y-mantenimiento)
 - [Desarrollo y Git](#desarrollo-y-git)
 
 ## Características
@@ -88,7 +89,7 @@ Overlay transparente para Windows que convierte las teclas usadas en OpenBOR en 
 Abrí PowerShell en la carpeta del proyecto:
 
 ```powershell
-cd D:\OneDrive\Documents\openbor-input-overlay
+cd D:\OneDrive\Documents\inpulsar-workspace\openbor-input-overlay
 npm.cmd install
 ```
 
@@ -617,7 +618,7 @@ npm.cmd run build:portable
 El archivo resultante queda en `dist/` con un nombre similar a:
 
 ```text
-OpenBOR Input Overlay-Portable-1.0.0-x64.exe
+OpenBOR Input Overlay-Portable-1.2.5-x64.exe
 ```
 
 Es un único ejecutable: no requiere instalación. Al cerrarlo desde la bandeja guarda un `config.json` junto al `.exe`; distribuí ese JSON solamente si querés incluir una configuración o perfiles predefinidos. Para una descarga limpia alcanza con publicar el `.exe`.
@@ -631,7 +632,7 @@ npm.cmd run build:installer
 El resultado usa un nombre similar a:
 
 ```text
-OpenBOR Input Overlay-Setup-1.0.0-x64.exe
+OpenBOR Input Overlay-Setup-1.2.5-x64.exe
 ```
 
 ### Generar ambos
@@ -753,7 +754,7 @@ Puede no tener equivalente en `UiohookKey`. Revisá `nativeName()` y `CODE_ALIAS
 Confirmá la carpeta antes de iniciar:
 
 ```powershell
-cd D:\OneDrive\Documents\openbor-input-overlay
+cd D:\OneDrive\Documents\inpulsar-workspace\openbor-input-overlay
 npm.cmd start
 ```
 
@@ -814,6 +815,20 @@ La ventana usa:
 - Un preload limitado mediante `contextBridge`
 
 El renderer no accede directamente al sistema de archivos ni a módulos de Node.js. Las operaciones sensibles se realizan en el proceso principal mediante canales IPC definidos explícitamente.
+
+## Proyecto, licencias y mantenimiento
+
+OpenBOR Input Overlay es un proyecto público independiente. Neon Pulsar Labs es el nombre de publicación usado por Gerardo Chavez, titular del copyright original; no es una entidad jurídica ni un titular distinto. El código y la documentación originales se publican bajo la licencia [MIT](LICENSE).
+
+Los derechos sobre gráficos y marcas se detallan en [RIGHTS.md](RIGHTS.md). Ese documento concede un permiso específico para `docs/og.png` y `renderer/assets/signature/inpulsar-signature-preview.png`, y distingue las marcas de los materiales bajo MIT. El logotipo de Neon Pulsar Labs tiene su propio permiso, limitado a la redistribución sin modificaciones en el contexto indicado por el [aviso del asset](renderer/assets/brand/NOTICE.md). La licencia MIT no otorga derechos sobre las marcas.
+
+Las dependencias de terceros conservan sus propias licencias. Consultá [los avisos de terceros](legal/THIRD-PARTY-NOTICES.md) y los textos en [`legal/licenses/`](legal/licenses/). El código fuente correspondiente y los materiales para recompilar y reenlazar `libuiohook` están en [`legal/native-source/`](legal/native-source/) y [las instrucciones de reenlace](legal/RELINKING.md). Electron y Chromium incluyen sus avisos de licencia en los paquetes de aplicación.
+
+E3.1d preparó y verificó esos materiales para posibles empaquetados futuros de la versión 1.2.5. Se recompiló y reenlazó una copia modificada de `libuiohook` en Windows x64, y se comprobó que builds aisladas del portable y del instalador contenían los avisos, licencias, fuentes y binarios esperados. [El registro de verificación](legal/VERIFICATION.md) describe el alcance y sus límites. Los ejecutables v1.2.5 ya publicados no se reemplazaron ni corrigieron con estos materiales.
+
+El mantenimiento de este repositorio se limita a evaluar correcciones justificadas de defectos, seguridad o compatibilidad según capacidad y prioridad; no hay calendario de releases ni compromiso de nuevas funciones. Para proponer un problema, abrí un [issue](https://github.com/ijchavez/openbor-input-overlay/issues) con pasos para reproducirlo, versión y entorno. Para proponer un cambio, discutí primero su alcance en un issue y enviá un [pull request](https://github.com/ijchavez/openbor-input-overlay/pulls) acotado, con explicación y pruebas pertinentes. Esto no establece todavía una política formal de contribución ni garantiza la aceptación de propuestas.
+
+Inpulsar Community Edition e Inpulsar Signature son líneas separadas, con repositorio, roadmap y condiciones de distribución propios. No son automáticamente distribuciones MIT derivadas de este repositorio; sus funciones y planes no implican cambios en OpenBOR Input Overlay.
 
 ## Desarrollo y Git
 
