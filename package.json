@@ -35,6 +35,11 @@
       "config.json",
       "package.json"
     ],
+    "extraResources": [
+      "LICENSE",
+      "RIGHTS.md",
+      { "from": "legal", "to": "legal" }
+    ],
     "win": {
       "target": [
         {

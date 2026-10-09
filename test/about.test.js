@@ -41,7 +41,7 @@ test('About contains the required identity and the unchanged official logo', () 
 test('About switches all interface copy and accessibility state without reloading', () => {
   const html = read('renderer/about.html');
   const renderer = read('renderer/about.js');
-  const labels = ['eyebrow', 'openSource', 'license', 'publisher', 'description', 'close'];
+  const labels = ['eyebrow', 'openSource', 'license', 'publisher', 'description', 'nativeNotice', 'close'];
   const ariaLabels = ['languageLabel', 'navigationLabel'];
   for (const key of labels) assert.ok(html.includes(`data-i18n="${key}"`));
   for (const key of ariaLabels) assert.ok(html.includes(`data-i18n-aria-label="${key}"`));
