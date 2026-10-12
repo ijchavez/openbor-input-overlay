@@ -44,11 +44,123 @@ const observer = new IntersectionObserver((entries) => {
   requestFrame();
 });
 parallaxSections.forEach((section) => observer.observe(section));
-const handleMotionChange = () => { resetParallax(); requestFrame(); };
+
+// Geometry changes only while a section is fully outside the viewport.
+const svgNamespace = 'http://www.w3.org/2000/svg';
+const circuitStates = [...document.querySelectorAll('[data-living-circuits]')].map((section) => {
+  const svg = section.querySelector('[data-living-pattern]');
+  return { section, svg, fallback: svg.innerHTML, seed: Math.floor(Math.random() * 0xffffffff), inside: false, generated: false };
+});
+const circuitsEnabled = () => !motionQuery.matches && desktopQuery.matches;
+let circuitResizeUntil = 0;
+
+const seededRandom = (initialSeed) => {
+  let seed = initialSeed;
+  return () => {
+    seed = (seed + 0x6d2b79f5) >>> 0;
+    let value = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    value ^= value + Math.imul(value ^ (value >>> 7), 61 | value);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
+const buildCircuitGeometry = (seed, height) => {
+  const random = seededRandom(seed);
+  const routeCount = 3 + Math.floor(random() * 2);
+  const routes = [];
+  const branches = [];
+  const nodes = [];
+  for (let index = 0; index < routeCount; index++) {
+    const lane = height * (index + 1) / (routeCount + 1);
+    const startY = Math.round(lane + (random() - .5) * 20);
+    const rise = (random() < .5 ? -1 : 1) * (46 + Math.round(random() * 9));
+    const middleY = startY + rise;
+    const endY = startY + Math.round((random() - .5) * 20);
+    const startX = 45 + Math.round(random() * 45);
+    const turnX = 185 + Math.round(random() * 85);
+    const middleX = 510 + Math.round(random() * 115);
+    const points = [
+      [startX, startY], [turnX, startY],
+      [turnX + 76 + Math.round(random() * 8), middleY], [middleX, middleY],
+      [middleX + 76 + Math.round(random() * 8), endY],
+      [1110 + Math.round(random() * 45), endY]
+    ];
+    routes.push({ points, tone: Math.floor(random() * 3) });
+  }
+  nodes.push(routes[0].points[5], routes[routeCount - 1].points[5]);
+  const branchCount = 1 + Math.floor(random() * 3);
+  const branchOffset = Math.floor(random() * routeCount);
+  for (let index = 0; index < branchCount; index++) {
+    const route = routes[(branchOffset + index) % routeCount];
+    const [middleX, middleY] = route.points[3];
+    const towardLane = Math.sign(route.points[0][1] - middleY) * (34 + Math.round(random() * 8));
+    const branchEnd = [middleX - 5, middleY + towardLane];
+    branches.push({
+      points: [[middleX - 110, middleY], [middleX - 75, middleY], [middleX - 30, branchEnd[1]], branchEnd],
+      tone: (route.tone + 1) % 3
+    });
+    nodes.push(branchEnd);
+  }
+  return { routes, branches, nodes };
+};
+
+const renderCircuit = (state) => {
+  const height = Number(state.svg.viewBox.baseVal.height);
+  const geometry = buildCircuitGeometry(state.seed, height);
+  const fragment = document.createDocumentFragment();
+  const colors = ['#c7ff38', '#e3ed63', '#a4d53d'];
+  [...geometry.routes, ...geometry.branches].forEach(({ points, tone }, index) => {
+    const path = document.createElementNS(svgNamespace, 'path');
+    path.setAttribute('class', 'living-path');
+    path.setAttribute('d', points.map(([x, y], pointIndex) => `${pointIndex ? 'L' : 'M'}${x} ${y}`).join(' '));
+    path.style.setProperty('--living-color', colors[tone]);
+    path.style.setProperty('--living-width', index < geometry.routes.length ? '2.7' : '1.6');
+    path.style.setProperty('--living-opacity', index < geometry.routes.length ? '.75' : '.48');
+    fragment.append(path);
+  });
+  geometry.nodes.forEach(([x, y]) => {
+    const node = document.createElementNS(svgNamespace, 'circle');
+    node.setAttribute('class', 'living-node');
+    node.setAttribute('cx', x);
+    node.setAttribute('cy', y);
+    node.setAttribute('r', '4.5');
+    fragment.append(node);
+  });
+  state.svg.replaceChildren(fragment);
+  state.generated = true;
+  state.seed = (state.seed + 0x9e3779b9) >>> 0;
+};
+
+const syncLivingCircuits = () => {
+  circuitStates.forEach((state) => {
+    if (!circuitsEnabled()) {
+      if (state.generated) state.svg.innerHTML = state.fallback;
+      state.generated = false;
+    } else if (state.inside && !state.generated) {
+      renderCircuit(state);
+    }
+  });
+};
+
+const circuitObserver = new IntersectionObserver((entries) => {
+  entries.forEach(({ target, isIntersecting }) => {
+    const state = circuitStates.find((item) => item.section === target);
+    if (isIntersecting) {
+      state.inside = true;
+      if (circuitsEnabled() && !state.generated) renderCircuit(state);
+    } else if (state.inside) {
+      state.inside = false;
+      if (circuitsEnabled() && state.generated && Date.now() > circuitResizeUntil) renderCircuit(state);
+    }
+  });
+}, { rootMargin: '24px 0px' });
+circuitStates.forEach(({ section }) => circuitObserver.observe(section));
+
+const handleMotionChange = () => { resetParallax(); syncLivingCircuits(); requestFrame(); };
 motionQuery.addEventListener('change', handleMotionChange);
 desktopQuery.addEventListener('change', handleMotionChange);
 window.addEventListener('scroll', requestFrame, { passive: true });
-window.addEventListener('resize', requestFrame, { passive: true });
+window.addEventListener('resize', () => { circuitResizeUntil = Date.now() + 350; requestFrame(); }, { passive: true });
 requestFrame();
 
 menuButton?.addEventListener('click', () => {

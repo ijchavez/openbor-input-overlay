@@ -141,6 +141,8 @@ h1 span { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.48); 
 .circuit-nodes i:nth-child(2) { left: 42%; top: 64%; background: #e3ed63; }
 .circuit-nodes i:nth-child(3) { right: 15%; top: 39%; }
 .circuit-nodes i:nth-child(4) { right: 7%; bottom: 14%; background: #e3ed63; }
+.signal-filaments path.living-path, .circuit-routes path.living-path { stroke: var(--living-color); stroke-width: var(--living-width); opacity: var(--living-opacity); stroke-linecap: round; stroke-linejoin: round; }
+.signal-filaments circle.living-node, .circuit-routes circle.living-node { fill: #e5f954; stroke: rgba(199,255,56,.27); stroke-width: 5; }
 .evolution-field { inset: -15% -5%; background: radial-gradient(ellipse 39% 50% at 9% 77%, rgba(199,255,56,.2), transparent 77%), radial-gradient(ellipse 35% 48% at 54% 48%, rgba(221,242,91,.18), transparent 77%), radial-gradient(ellipse 25% 42% at 96% 18%, rgba(112,217,223,.13), transparent 79%); }
 .evolution-flow { inset: -11% -3%; width: 106%; height: 122%; fill: none; stroke: url(#evolution-gradient); stroke-width: 4.5; stroke-linecap: round; opacity: .92; filter: drop-shadow(0 0 9px rgba(199,255,56,.65)); }
 .evolution-flow path:nth-of-type(2) { stroke-width: 2; opacity: .62; }
