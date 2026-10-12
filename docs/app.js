@@ -7,11 +7,11 @@ const t = (value) => window.siteI18n?.t(value) || value;
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 const desktopQuery = window.matchMedia('(min-width: 761px)');
 const parallaxLayers = [...document.querySelectorAll('[data-parallax]')];
-const visibleLayers = new Set();
+const parallaxSections = [...new Set(parallaxLayers.map((layer) => layer.parentElement))];
+const visibleSections = new Set();
 let frameRequested = false;
 
 const resetParallax = () => {
-  visibleLayers.clear();
   parallaxLayers.forEach((layer) => { layer.style.transform = ''; });
 };
 
@@ -20,10 +20,12 @@ const updateFrame = () => {
   header?.classList.toggle('scrolled', window.scrollY > 16);
   if (motionQuery.matches || !desktopQuery.matches) return;
   const viewportCenter = window.innerHeight / 2;
-  visibleLayers.forEach((layer) => {
-    const rect = layer.parentElement.getBoundingClientRect();
+  visibleSections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
     const progress = Math.max(-1, Math.min(1, (rect.top + rect.height / 2 - viewportCenter) / (viewportCenter + rect.height / 2)));
-    layer.style.transform = `translate3d(0, ${(progress * Number(layer.dataset.parallax)).toFixed(2)}px, 0)`;
+    section.querySelectorAll('[data-parallax]').forEach((layer) => {
+      layer.style.transform = `translate3d(0, ${(progress * Number(layer.dataset.parallax)).toFixed(2)}px, 0)`;
+    });
   });
 };
 
@@ -35,12 +37,13 @@ const requestFrame = () => {
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(({ target, isIntersecting }) => {
-    if (isIntersecting) visibleLayers.add(target.querySelector('[data-parallax]'));
-    else visibleLayers.delete(target.querySelector('[data-parallax]'));
+    if (isIntersecting) visibleSections.add(target);
+    else visibleSections.delete(target);
+    target.classList.toggle('parallax-active', isIntersecting);
   });
   requestFrame();
 });
-parallaxLayers.forEach((layer) => observer.observe(layer.parentElement));
+parallaxSections.forEach((section) => observer.observe(section));
 const handleMotionChange = () => { resetParallax(); requestFrame(); };
 motionQuery.addEventListener('change', handleMotionChange);
 desktopQuery.addEventListener('change', handleMotionChange);
