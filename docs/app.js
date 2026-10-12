@@ -195,6 +195,7 @@ document.querySelectorAll('[data-copy]').forEach((button) => {
 
 document.querySelector('[data-year]').textContent = new Date().getFullYear();
 
+const controller = document.querySelector('[data-controller]');
 const demoInputs = [
   ['.dpad-key.right', '.face.circle'],
   ['.dpad-key.down', '.face.cross'],
@@ -203,14 +204,68 @@ const demoInputs = [
 ];
 let demoStep = 0;
 const animateController = () => {
-  document.querySelectorAll('.dpad-key, .face').forEach((item) => item.classList.remove('active'));
-  demoInputs[demoStep].forEach((selector) => document.querySelector(selector)?.classList.add('active'));
+  controller?.querySelectorAll('.dpad-key, .face').forEach((item) => item.classList.remove('active'));
+  demoInputs[demoStep].forEach((selector) => controller?.querySelector(selector)?.classList.add('active'));
   demoStep = (demoStep + 1) % demoInputs.length;
 };
+
+const stickPreview = document.querySelector('[data-stick-preview]');
+const stickBase = stickPreview?.querySelector('.stick-base');
+const stickKnob = stickPreview?.querySelector('[data-stick-knob]');
+const stickButtons = [...(stickPreview?.querySelectorAll('[data-stick-button]') || [])];
+const stickSequences = [
+  [{ direction: 'down' }, { direction: 'down-right' }, { direction: 'right' }, { buttons: ['X'] }],
+  [{ direction: 'left' }, { direction: 'right' }, { buttons: ['B'] }],
+  [{ direction: 'up' }, { buttons: ['A'] }],
+  [{ direction: 'down' }, { direction: 'down-right' }, { direction: 'right' }, { buttons: ['X', 'A'] }]
+];
+const stickPositions = {
+  center: [0, 0], down: [0, 22], 'down-right': [16, 16], right: [22, 0], left: [-22, 0], up: [0, -22]
+};
+let previousSequence = -1;
+let currentSequence = null;
+let stickStep = 0;
+let pauseTicks = 0;
+let motionTick = 0;
 let controllerTimer;
+
+const showStickInput = ({ direction = 'center', buttons = [] } = {}) => {
+  const [x, y] = stickPositions[direction];
+  stickKnob?.style.setProperty('--stick-x', `${x}px`);
+  stickKnob?.style.setProperty('--stick-y', `${y}px`);
+  stickBase?.classList.toggle('is-moving', direction !== 'center');
+  stickButtons.forEach((button) => button.classList.toggle('active', buttons.includes(button.dataset.stickButton)));
+};
+
+const advanceStickSequence = () => {
+  if (pauseTicks > 0) { pauseTicks--; return; }
+  if (!currentSequence) {
+    const choices = stickSequences.map((_, index) => index).filter((index) => index !== previousSequence);
+    previousSequence = choices[Math.floor(Math.random() * choices.length)];
+    currentSequence = stickSequences[previousSequence];
+    stickStep = 0;
+  }
+  if (stickStep < currentSequence.length) {
+    showStickInput(currentSequence[stickStep++]);
+  } else {
+    showStickInput();
+    currentSequence = null;
+    pauseTicks = 2;
+  }
+};
+
 const syncControllerMotion = () => {
   window.clearInterval(controllerTimer);
-  if (!motionQuery.matches) controllerTimer = window.setInterval(animateController, 1300);
+  if (motionQuery.matches) {
+    showStickInput({ buttons: ['A'] });
+    return;
+  }
+  if (document.hidden) return;
+  controllerTimer = window.setInterval(() => {
+    if (motionTick++ % 4 === 0) animateController();
+    advanceStickSequence();
+  }, 300);
 };
 motionQuery.addEventListener('change', syncControllerMotion);
+document.addEventListener('visibilitychange', syncControllerMotion);
 syncControllerMotion();
