@@ -25,6 +25,8 @@
       'Ver otras opciones': 'See other options',
       'Gratis y de código abierto': 'Free and open source',
       'No requiere OBS para funcionar': 'Does not require OBS to work',
+      'Overlay de inputs open source para OpenBOR.': 'Open-source input overlay for OpenBOR.',
+      'Ver código fuente en GitHub': 'View source on GitHub',
       'INPUT ACTIVO': 'INPUT ACTIVE',
       'PERFIL: DEFAULT': 'PROFILE: DEFAULT',
       'Las entradas se iluminan': 'Inputs light up',
@@ -75,12 +77,13 @@
       'Copiado': 'Copied',
       'Seleccioná y copiá': 'Select and copy',
       'La aplicación todavía no está firmada digitalmente. Windows SmartScreen puede mostrar una advertencia al abrirla por primera vez.': 'The app is not digitally signed yet. Windows SmartScreen may show a warning the first time you open it.',
-      'Una marca. Dos ediciones.': 'One brand. Two editions.',
-      'Inpulsar Basic sigue siendo gratuito, completo y configurable.': 'Inpulsar Basic remains free, complete, and configurable.',
-      'Inpulsar Signature lleva la identidad visual más lejos con más opciones de personalización y presentación para creadores.': 'Inpulsar Signature takes visual identity further with more customization options and creator-focused presentation.',
-      'Gratis, completo y configurable.': 'Free, complete, and configurable.',
-      'Más identidad visual, personalización y herramientas de presentación para creadores.': 'Stronger visual identity, customization, and creator-focused presentation.',
-      'Conocer Inpulsar Signature': 'Discover Inpulsar Signature',
+      'De OpenBOR a INPULSAR': 'From OpenBOR to INPULSAR',
+      'Una idea que siguió creciendo.': 'An idea that kept growing.',
+      'OpenBOR Input Overlay nació como un proyecto open source para hacer visibles los controles durante partidas de OpenBOR. Esa idea evolucionó hacia INPULSAR, un ecosistema más amplio de overlays para gaming, grabación, streaming y creadores, desarrollado por Neon Pulsar Labs.': 'OpenBOR Input Overlay began as an open-source project to make controller inputs visible during OpenBOR gameplay. That idea evolved into INPULSAR, a broader input-overlay ecosystem for gaming, recording, streaming and creators, developed by Neon Pulsar Labs.',
+      'El proyecto original permanece disponible de forma independiente, con código fuente público, licencia MIT y sus propias descargas.': 'The original project remains independently available, with public source code, an MIT license and its own downloads.',
+      'Conocer INPULSAR': 'Discover INPULSAR',
+      'Freeware con código fuente privado. Edición completa v1.3.0, sin marcas de agua y con distribución propia.': 'Freeware with private source code. A complete v1.3.0 edition without watermarks, distributed separately.',
+      'Edición premium. Coming soon; todavía sin distribución pública.': 'Premium edition. Coming soon; not yet publicly distributed.',
       'En desarrollo activo': 'Actively developed',
       'Qué hay de nuevo.': "What's new.",
       'Todas las versiones': 'All releases',
@@ -110,7 +113,7 @@
       'Listo para la próxima partida': 'Ready for the next game',
       'Que cada movimiento cuente.': 'Make every move count.',
       'Descargar gratis': 'Download free',
-      'Proyecto independiente para la comunidad de OpenBOR. No afiliado al equipo oficial de OpenBOR.': 'An independent project for the OpenBOR community. Not affiliated with the official OpenBOR team.',
+      'Proyecto independiente, gratuito y open source bajo licencia MIT. Origen de INPULSAR. No afiliado al equipo oficial de OpenBOR.': 'Independent, free and open-source project under the MIT license. The origin of INPULSAR. Not affiliated with the official OpenBOR team.',
       'Código fuente': 'Source code',
       'Reportar un problema': 'Report an issue',
       'Hecho para jugadores y creadores.': 'Made for players and creators.',
@@ -140,6 +143,8 @@
       'Ver otras opciones': 'Ver outras opções',
       'Gratis y de código abierto': 'Grátis e de código aberto',
       'No requiere OBS para funcionar': 'Não precisa do OBS para funcionar',
+      'Overlay de inputs open source para OpenBOR.': 'Overlay de inputs open source para OpenBOR.',
+      'Ver código fuente en GitHub': 'Ver código-fonte no GitHub',
       'INPUT ACTIVO': 'INPUT ATIVO',
       'PERFIL: DEFAULT': 'PERFIL: PADRÃO',
       'Las entradas se iluminan': 'Os comandos acendem',
@@ -188,12 +193,13 @@
       'Copiado': 'Copiado',
       'Seleccioná y copiá': 'Selecione e copie',
       'La aplicación todavía no está firmada digitalmente. Windows SmartScreen puede mostrar una advertencia al abrirla por primera vez.': 'O aplicativo ainda não tem assinatura digital. O Windows SmartScreen pode exibir um aviso ao abri-lo pela primeira vez.',
-      'Una marca. Dos ediciones.': 'Uma marca. Duas edições.',
-      'Inpulsar Basic sigue siendo gratuito, completo y configurable.': 'O Inpulsar Basic continua gratuito, completo e configurável.',
-      'Inpulsar Signature lleva la identidad visual más lejos con más opciones de personalización y presentación para creadores.': 'O Inpulsar Signature leva a identidade visual mais longe, com mais opções de personalização e apresentação para criadores.',
-      'Gratis, completo y configurable.': 'Gratuito, completo e configurável.',
-      'Más identidad visual, personalización y herramientas de presentación para creadores.': 'Mais identidade visual, personalização e recursos de apresentação para criadores.',
-      'Conocer Inpulsar Signature': 'Conhecer o Inpulsar Signature',
+      'De OpenBOR a INPULSAR': 'Do OpenBOR ao INPULSAR',
+      'Una idea que siguió creciendo.': 'Uma ideia que continuou crescendo.',
+      'OpenBOR Input Overlay nació como un proyecto open source para hacer visibles los controles durante partidas de OpenBOR. Esa idea evolucionó hacia INPULSAR, un ecosistema más amplio de overlays para gaming, grabación, streaming y creadores, desarrollado por Neon Pulsar Labs.': 'O OpenBOR Input Overlay surgiu como um projeto open source para tornar os comandos visíveis durante partidas de OpenBOR. Essa ideia evoluiu para o INPULSAR, um ecossistema mais amplo de overlays para jogos, gravação, streaming e criadores, desenvolvido pela Neon Pulsar Labs.',
+      'El proyecto original permanece disponible de forma independiente, con código fuente público, licencia MIT y sus propias descargas.': 'O projeto original continua disponível de forma independente, com código-fonte público, licença MIT e downloads próprios.',
+      'Conocer INPULSAR': 'Conhecer o INPULSAR',
+      'Freeware con código fuente privado. Edición completa v1.3.0, sin marcas de agua y con distribución propia.': 'Freeware com código-fonte privado. Edição completa v1.3.0, sem marcas d’água e com distribuição própria.',
+      'Edición premium. Coming soon; todavía sin distribución pública.': 'Edição premium. Coming soon; ainda sem distribuição pública.',
       'En desarrollo activo': 'Em desenvolvimento ativo',
       'Qué hay de nuevo.': 'O que há de novo.',
       'Todas las versiones': 'Todas as versões',
@@ -223,7 +229,7 @@
       'Listo para la próxima partida': 'Pronto para a próxima partida',
       'Que cada movimiento cuente.': 'Faça cada movimento valer.',
       'Descargar gratis': 'Baixar grátis',
-      'Proyecto independiente para la comunidad de OpenBOR. No afiliado al equipo oficial de OpenBOR.': 'Projeto independente para a comunidade OpenBOR. Não afiliado à equipe oficial do OpenBOR.',
+      'Proyecto independiente, gratuito y open source bajo licencia MIT. Origen de INPULSAR. No afiliado al equipo oficial de OpenBOR.': 'Projeto independente, gratuito e open source sob licença MIT. Origem do INPULSAR. Não afiliado à equipe oficial do OpenBOR.',
       'Código fuente': 'Código-fonte',
       'Reportar un problema': 'Relatar um problema',
       'Hecho para jugadores y creadores.': 'Feito para jogadores e criadores.',
@@ -233,19 +239,19 @@
 
   const pageMeta = {
     es: {
-      title: 'OpenBOR Input Overlay — Controles visibles para jugar y transmitir',
-      description: 'Overlay de controles transparente para OpenBOR, grabaciones y transmisiones con OBS. Gratis para Windows.',
-      social: 'Mostrá tus controles en tiempo real mientras jugás, grabás o transmitís.'
+      title: 'OpenBOR Input Overlay — Overlay open source para OpenBOR',
+      description: 'OpenBOR Input Overlay: overlay de inputs gratuito y open source para OpenBOR. El proyecto original que dio origen a INPULSAR.',
+      social: 'Overlay de inputs open source para OpenBOR. El proyecto original que dio origen a INPULSAR.'
     },
     en: {
-      title: 'OpenBOR Input Overlay — Show your controls while you play and stream',
-      description: 'A transparent controller overlay for OpenBOR, recording, and OBS streaming. Free for Windows.',
-      social: 'Show your controls in real time while you play, record, or stream.'
+      title: 'OpenBOR Input Overlay — Open-source overlay for OpenBOR',
+      description: 'OpenBOR Input Overlay: free, open-source input overlay for OpenBOR. The original project that gave rise to INPULSAR.',
+      social: 'Open-source input overlay for OpenBOR. The original project that gave rise to INPULSAR.'
     },
     'pt-br': {
-      title: 'OpenBOR Input Overlay — Mostre seus controles ao jogar e transmitir',
-      description: 'Overlay de controles transparente para OpenBOR, gravações e transmissões com OBS. Grátis para Windows.',
-      social: 'Mostre seus controles em tempo real enquanto joga, grava ou transmite.'
+      title: 'OpenBOR Input Overlay — Overlay open source para OpenBOR',
+      description: 'OpenBOR Input Overlay: overlay de inputs gratuito e open source para OpenBOR. O projeto original que deu origem ao INPULSAR.',
+      social: 'Overlay de inputs open source para OpenBOR. O projeto original que deu origem ao INPULSAR.'
     }
   };
 
